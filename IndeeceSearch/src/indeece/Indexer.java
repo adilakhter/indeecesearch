@@ -75,6 +75,8 @@ public class Indexer {
 	    			documentID++;
 	    		}
 	    	}
+	    	return corpus;
+	    }
 	    
 	    static String getTextValue(Element ele, String tagName) {
 			String textVal = null;

@@ -30,7 +30,6 @@ public class Index
 		CharStream charStream;
 		SimpleTokenizer tokenizer;
 		String next;
-		int frequency = 1;
 		String wholeDoc = doc.getTitle() + " " + doc.getBody();
 		
 		//Index 		
@@ -43,21 +42,15 @@ public class Index
 			{
 				PostingList postingList = new PostingList();
 				postingList.add(postingList.new Item(doc, 1));
-				
-				//postingList.add(new PostingList.Item(doc, 1));
-				//this.entries.put(next, postingList);
+				this.entries.put(next, postingList);
 			
 			} else{
-				
+				PostingList postingList = this.entries.get(next);
+				//Iterator<PostingList.Item> i = new postingList.
 				
 			}
 		}
 		
-		
-	}
-	
-	public void addTerm(String term)
-	{
 		
 	}
 	

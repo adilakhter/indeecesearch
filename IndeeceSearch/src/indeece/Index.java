@@ -5,6 +5,7 @@ import grammar.SimpleTokenizer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Arrays;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
@@ -45,9 +46,18 @@ public class Index
 				this.entries.put(next, postingList);
 			
 			} else{
-				PostingList postingList = this.entries.get(next);
-				//Iterator<PostingList.Item> i = new postingList.
 				
+				PostingList postingList = this.entries.get(next);
+				
+				for(Iterator<PostingList.Item> i = postingList.iterator(); i.hasNext();)
+				{
+					if (i.next().getDoc().getID() == doc.getID()){
+						i.next().increaseFrequency();
+					} else {
+						postingList.add(postingList.new Item(doc, 1));
+						this.entries.put(next, postingList);
+					}
+				}				
 			}
 		}
 		

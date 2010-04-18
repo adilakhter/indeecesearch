@@ -1,6 +1,9 @@
 package indeece;
 import java.io.*;
 import java.util.Iterator;
+
+import org.antlr.runtime.RecognitionException;
+
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
@@ -14,7 +17,7 @@ public class MainCmdLine {
 	}
 	
 	public static void 
-	main(String[] args) throws IOException {
+	main(String[] args) throws IOException, RecognitionException {
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 		OptionSet opts = (new OptionParser("i:d:r:os")).parse(args);
 		Searcher searcher = null;

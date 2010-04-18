@@ -61,6 +61,8 @@ public class Index
 		
 	}
 	
-	
+	public PostingList getEntry(String term){
+		return null;
+	}
 	
 }

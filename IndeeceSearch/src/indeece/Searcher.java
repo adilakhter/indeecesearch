@@ -40,7 +40,7 @@ public class Searcher {
 	private boolean rank;
 	private boolean rankopt;
 	public 
-	Searcher(boolean rank, boolean rankopt, boolean stem, String docsDir)
+	Searcher(boolean rank, boolean rankopt, boolean stemming, String docsDir)
 	{
 		this.rank = rank;
 		this.rankopt = rankopt;
@@ -62,30 +62,34 @@ public class Searcher {
 	public Set<Searcher.Result> 
 	search(String query) throws RecognitionException
 	{
+		Tokenizer terms = new Tokenizer(query);
 		if(rank && rankopt)
-			return vectorSpaceSearchOpt(query);
+			return vectorSpaceSearchOpt(terms);
 		else if(rank)
-			return vectorSpaceSearch(query);
+			return vectorSpaceSearch(terms);
 		
-		return booleanSpaceSearch(query);
+		return booleanSpaceSearch(terms);
+	}
+	
+	// Return the first kappa most relevant documents.
+	// Each document is represented as a normalized vector
+	public Set<Result>
+	vectorSpaceSearch(Tokenizer terms)
+	{
+		
+		// TODO
+		return null;
 	}
 	
 	public Set<Result>
-	vectorSpaceSearch(String query)
+	vectorSpaceSearchOpt(Tokenizer terms)
 	{
 		// TODO
 		return null;
 	}
 	
 	public Set<Result>
-	vectorSpaceSearchOpt(String query)
-	{
-		// TODO
-		return null;
-	}
-	
-	public Set<Result>
-	booleanSpaceSearch(String query)
+	booleanSpaceSearch(Tokenizer terms)
 	{
 		/*
 		CharStream charStream = new ANTLRStringStream(query);

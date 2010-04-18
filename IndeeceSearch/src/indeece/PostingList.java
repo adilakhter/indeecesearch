@@ -55,7 +55,7 @@ public class PostingList extends TreeSet<PostingList.Item> {
 		@Override
 		public int compareTo(Item arg0) {
 			// TODO Auto-generated method stub
-			return 0;
+			return this.doc.getID()-arg0.doc.getID();
 		}
 		
 	}

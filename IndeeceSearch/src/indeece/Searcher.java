@@ -19,7 +19,7 @@ import org.antlr.runtime.tree.CommonTreeNodeStream;
 
 public class Searcher {
 	
-	public class Result implements Comparable<Searcher.Result>
+	public class Result
 	{
 		private Doc doc;
 		
@@ -35,13 +35,6 @@ public class Searcher {
 		{
 			// TODO
 			return "result for: " + doc;
-		}
-		
-		public int 
-		compareTo(Searcher.Result res)
-		{
-			// TODO
-			return 0;
 		}
 	}
 	private boolean rank;

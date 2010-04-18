@@ -42,6 +42,10 @@ public class PostingList extends TreeSet<PostingList.Item> {
 			this.frequency = f;
 		}
 		
+		public void increaseFrequency(){
+			this.frequency++;
+		}
+		
 		public int getFrequency()
 		{
 			return this.frequency;

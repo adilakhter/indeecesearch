@@ -11,19 +11,19 @@ public class PostingList extends TreeSet<PostingList.Item> {
 		super();
 	}
 	
-	public PostingList and(Set<Doc> other)
+	public PostingList and(PostingList other)
 	{
 		// TODO
 		return null;
 	}
 	
-	public PostingList or(Set<Doc> other)
+	public PostingList or(PostingList other)
 	{
 		// TODO
 		return null;
 	}
 	
-	public PostingList not(Set<Doc> other)
+	public PostingList not(PostingList other)
 	{
 		// TODO
 		return null;

@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.PriorityQueue;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
@@ -19,15 +20,26 @@ import org.antlr.runtime.tree.CommonTreeNodeStream;
 
 public class Searcher {
 	
-	public class Result
+	public class Result implements Comparable<Result>
 	{
 		private Doc doc;
+		private float score;
+		public Result(Doc doc, float score)
+		{
+			this.doc = doc;
+			this.score = score;
+			// TODO
+		}
 		
 		public Result(Doc doc)
 		{
-			this.doc = doc;
-			// TODO
-
+			this(doc, 0);
+		}
+		
+		public int
+		compareTo(Result other)
+		{
+			return (int)(this.score - other.score);
 		}
 		
 		public String 
@@ -37,8 +49,10 @@ public class Searcher {
 			return "result for: " + doc;
 		}
 	}
+	private int kappa = 10;
 	private boolean rank;
 	private boolean rankopt;
+	
 	public 
 	Searcher(boolean rank, boolean rankopt, boolean stemming, String docsDir)
 	{
@@ -63,6 +77,7 @@ public class Searcher {
 	search(String query) throws RecognitionException
 	{
 		Preprocessed terms = new Preprocessed(query);
+		
 		if(rank && rankopt)
 			return vectorSpaceSearchOpt(terms);
 		else if(rank)
@@ -77,24 +92,44 @@ public class Searcher {
 	vectorSpaceSearch(Preprocessed terms)
 	{
 		Index index = Indexer.getActiveIndex();
-		// gather set of documents that contain those terms
 		HashSet<Doc> docs = new HashSet<Doc>();
+		TreeSet<Result> results = new TreeSet<Result>();
+		PriorityQueue<Result> heap = new PriorityQueue<Result>();
+
+		// gather set of documents that contain those terms
 		for(Iterator<String> termit = terms.iterator(); termit.hasNext(); ) {
+			// set tf_idf(t, d)
 			PostingList pl = index.getEntry(termit.next());
 			for(Iterator<PostingList.Item> plit = pl.iterator(); plit.hasNext(); ) {
 				docs.add(plit.next().getDoc());
 			}
 		}
-			
-		// TODO
-		return null;
+		
+		// for each document referenced by the given terms
+		for(Iterator<Doc> docit = docs.iterator(); docit.hasNext(); ) {
+			Doc d = docit.next();
+			// for each of the given terms
+			float score = 0;
+			for(Iterator<String> termit = terms.iterator(); termit.hasNext(); ) {
+				String t = termit.next();
+				// score += tf_idf(t, d) * tf_idf(t, q) (TODO)
+			}
+			// score /= d.length (TODO) 
+			if(score != 0) {
+				heap.add(new Result(d, score));
+			}
+		}
+		
+		for(int i=0;(i < kappa) && (!heap.isEmpty()); i++)
+			results.add(heap.poll());
+		return results;
 	}
 	
 	public Set<Result>
 	vectorSpaceSearchOpt(Preprocessed terms)
 	{
 		// TODO
-		return null;
+		return vectorSpaceSearch(terms);
 	}
 	
 	public Set<Result>

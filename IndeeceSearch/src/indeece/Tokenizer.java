@@ -7,7 +7,8 @@ public class Tokenizer extends HashSet<String> {
 	public Tokenizer(String body)
 	{
 		super();
-		String words[] = body.split("\\s");
+		// comma, dot, semicolon, etc..
+		String words[] = body.split("[\\s;,.;]");
 		for(int i=0; i < words.length; i++) {		
 			String newTerm = makeTerm(words[i]);
 			if(newTerm != null)
@@ -17,13 +18,22 @@ public class Tokenizer extends HashSet<String> {
 	
 	private String makeTerm(String word)
 	{
-		// Implement stemming, permuterm, rank optimization, etc ..
+		// Implement stemming, permuterm
 		return word;
+	}
+	
+	public String toString()
+	{
+		String ret = new String("");
+		for(Iterator<String> termit=iterator(); termit.hasNext(); )
+			ret = ret + " " + termit.next();
+		
+		return ret;
 	}
 	
 	public static void main(String args[])
 	{
-		Tokenizer t = new Tokenizer("hello world hello to you to!");
+		Tokenizer t = new Tokenizer("hello world hello.to,you;to!");
 		
 		for(Iterator<String> it = t.iterator(); it.hasNext(); ) {
 			System.out.println("term: " + it.next());

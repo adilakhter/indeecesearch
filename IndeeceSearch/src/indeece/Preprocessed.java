@@ -24,7 +24,7 @@ public class Preprocessed extends HashSet<String> {
 	
 	private String makeTerm(String word)
 	{
-		// Implement stemming, permuterm
+		// Implement stemming, permuterm (TODO)
 		return word;
 	}
 	

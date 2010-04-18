@@ -4,6 +4,7 @@ import grammar.booleanGrammarLexer;
 import grammar.booleanGrammarParser;
 import grammar.booleanGrammarParser.prog_return;
 
+import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.HashSet;
@@ -88,16 +89,19 @@ public class Searcher {
 	// Return the first kappa most relevant documents.
 	// Each document is represented as a normalized vector
 	public Set<Result>
-	vectorSpaceSearch(Preprocessed terms)
+	vectorSpaceSearch(Preprocessed query)
 	{
 		Index index = Indexer.getActiveIndex();
 		HashSet<Doc> docs = new HashSet<Doc>();
 		TreeSet<Result> results = new TreeSet<Result>();
 		BinaryHeap heap = new BinaryHeap();
+		HashMap<String, Float> tfidf_q = new HashMap<String, Float>();
 
 		// gather set of documents that contain those terms
-		for(Iterator<String> termit = terms.iterator(); termit.hasNext(); ) {
-			// set tf_idf(t, d)
+		for(Iterator<String> termit = query.iterator(); termit.hasNext(); ) {
+			String t = termit.next();
+			// save tf-idf for t,query
+			tfidf_q.put(t, index.tfidfCalc(t, query));
 			PostingList pl = index.getEntry(termit.next());
 			for(Iterator<PostingList.Item> plit = pl.iterator(); plit.hasNext(); ) {
 				docs.add(plit.next().getDoc());
@@ -109,14 +113,14 @@ public class Searcher {
 			Doc d = docit.next();
 			// for each of the given terms
 			float score = 0;
-			for(Iterator<String> termit = terms.iterator(); termit.hasNext(); ) {
+			for(Iterator<String> termit = query.iterator(); termit.hasNext(); ) {
 				String t = termit.next();
-				// score += tf_idf(t, d) * tf_idf(t, q) (TODO)
+				score += index.tfidf(t, d) * tfidf_q.get(t);
 			}
-			// score /= d.length (TODO) 
-			if(score != 0) {
+			score /= d.getLength();
+			if(score != 0)
 				heap.add(new Result(d, score));
-			}
+
 		}
 		
 		for(int i=0;(i < kappa) && (!heap.isEmpty()); i++)

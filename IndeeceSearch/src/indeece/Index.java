@@ -68,4 +68,15 @@ public class Index
 		return null;
 	}
 	
+	public float tfidfCalc(String term, Preprocessed docBody)
+	{
+		// TODO
+		return 0;
+	}
+	
+	public float tfidf(String term, Doc doc)
+	{
+		// TODO
+		return 0;
+	}
 }

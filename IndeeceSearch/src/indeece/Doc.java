@@ -4,12 +4,14 @@ public class Doc {
 	private int ID;
 	private String title;
 	private String body;
-
+	private int length;
+	
 	public Doc(int iD, String title, String body) {
 		super();
 		ID = iD;
 		this.title = title;
 		this.body = body;
+		// set length (TODO)
 	}
 	
 	public void setID(int ID){
@@ -29,5 +31,9 @@ public class Doc {
 	}
 	public String getBody(){
 		return this.body;
+	}
+	
+	public int getLength() {
+		return this.length;
 	}
 }

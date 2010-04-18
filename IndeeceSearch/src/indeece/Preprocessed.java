@@ -2,9 +2,9 @@ package indeece;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class Tokenizer extends HashSet<String> {
+public class Preprocessed extends HashSet<String> {
 
-	public Tokenizer(String body)
+	public Preprocessed(String body)
 	{
 		super();
 		// comma, dot, semicolon, etc..
@@ -33,7 +33,7 @@ public class Tokenizer extends HashSet<String> {
 	
 	public static void main(String args[])
 	{
-		Tokenizer t = new Tokenizer("hello world hello.to,you;to!");
+		Preprocessed t = new Preprocessed("hello world hello.to,you;to!");
 		
 		for(Iterator<String> it = t.iterator(); it.hasNext(); ) {
 			System.out.println("term: " + it.next());

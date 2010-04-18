@@ -94,7 +94,7 @@ public class Indexer {
 	     	return Indexer.parseDocuments();
 	    }
 	
-	public static Index getIndex()
+	public static Index getActiveIndex()
 	{
 		return activeIndex;
 	}

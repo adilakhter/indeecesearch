@@ -31,5 +31,5 @@ expr   returns [PostingList  result]
       
       
       
-      | TOKEN                {result = Indexer.getIndex().getEntry($TOKEN.text).getPostingList();}
+      | TOKEN                {result = Indexer.getActiveIndex().getEntry($TOKEN.text).getPostingList();}
       ; 

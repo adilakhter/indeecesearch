@@ -62,7 +62,7 @@ public class Searcher {
 	public Set<Searcher.Result> 
 	search(String query) throws RecognitionException
 	{
-		Tokenizer terms = new Tokenizer(query);
+		Preprocessed terms = new Preprocessed(query);
 		if(rank && rankopt)
 			return vectorSpaceSearchOpt(terms);
 		else if(rank)
@@ -74,22 +74,27 @@ public class Searcher {
 	// Return the first kappa most relevant documents.
 	// Each document is represented as a normalized vector
 	public Set<Result>
-	vectorSpaceSearch(Tokenizer terms)
+	vectorSpaceSearch(Preprocessed terms)
 	{
-		
+		Index index = Indexer.getActiveIndex();
+		// gather set of documents that contain those terms
+		for(Iterator<String> termit = terms.iterator(); termit.hasNext(); ) {
+			//PostingList plist = index.getEntry(termit.next());
+		}
+			
 		// TODO
 		return null;
 	}
 	
 	public Set<Result>
-	vectorSpaceSearchOpt(Tokenizer terms)
+	vectorSpaceSearchOpt(Preprocessed terms)
 	{
 		// TODO
 		return null;
 	}
 	
 	public Set<Result>
-	booleanSpaceSearch(Tokenizer terms)
+	booleanSpaceSearch(Preprocessed terms)
 	{
 		/*
 		CharStream charStream = new ANTLRStringStream(query);

@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.PriorityQueue;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
@@ -94,7 +93,7 @@ public class Searcher {
 		Index index = Indexer.getActiveIndex();
 		HashSet<Doc> docs = new HashSet<Doc>();
 		TreeSet<Result> results = new TreeSet<Result>();
-		PriorityQueue<Result> heap = new PriorityQueue<Result>();
+		BinaryHeap heap = new BinaryHeap();
 
 		// gather set of documents that contain those terms
 		for(Iterator<String> termit = terms.iterator(); termit.hasNext(); ) {
@@ -104,7 +103,7 @@ public class Searcher {
 				docs.add(plit.next().getDoc());
 			}
 		}
-		
+
 		// for each document referenced by the given terms
 		for(Iterator<Doc> docit = docs.iterator(); docit.hasNext(); ) {
 			Doc d = docit.next();

@@ -2,8 +2,14 @@ package indeece;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class Preprocessed extends HashSet<String> {
+import stemmer.IStemmer;
+import stemmer.PorterStemmer;
 
+
+public class Preprocessed extends HashSet<String> {
+	
+	IStemmer stemmer = new PorterStemmer(); 
+	
 	public Preprocessed(String body)
 	{
 		super();
@@ -20,6 +26,11 @@ public class Preprocessed extends HashSet<String> {
 	{
 		// Implement stemming, permuterm
 		return word;
+	}
+	
+	public String stemmedTerm(String word)
+	{
+		return stemmer.stemTerm(word);
 	}
 	
 	public String toString()

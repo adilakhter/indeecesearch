@@ -1,12 +1,15 @@
 package indeece;
 
 import java.util.Set;
-import java.util.HashSet;
 import java.util.TreeSet;
 
 public class PostingList extends TreeSet<PostingList.Item> {
 
 	private static final long serialVersionUID = 1L;
+	
+	public PostingList(){
+		super();
+	}
 	
 	public PostingList and(Set<Doc> other)
 	{

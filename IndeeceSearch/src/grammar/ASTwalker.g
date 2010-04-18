@@ -8,7 +8,7 @@ options {
 
 @header {
   package grammar;
-  import indeece.Indeece;
+  import indeece.Indexer;
   import indeece.PostingList;
   
 }
@@ -26,10 +26,10 @@ expr   returns [PostingList  result]
         
       
       
-      |^( 'NOT' op1=expr)       {result=op1.not(Indeece.getCorpus()); }
+      |^( 'NOT' op1=expr)       {result=op1.not(Indexer.getCorpus()); }
       
       
       
       
-      | TOKEN                {result = Indeece.getIndex().getEntry($TOKEN.text).getPostingList();}
+      | TOKEN                {result = Indexer.getIndex().getEntry($TOKEN.text).getPostingList();}
       ; 

@@ -62,9 +62,39 @@ public class Searcher {
 		// unmarshall indexer from file (TODO)
 	}
 	
+	// Returns results from boolean space search if ranking is disabled.
+	// If ranking is enabled, return vector space search results.
+	// If ranking optimization is enabled, return vector space resutls,
+	// by only considering query terms with the highest idf(t) weight.
 	public Set<Searcher.Result> 
 	search(String query) throws RecognitionException
 	{
+		if(rank && rankopt)
+			return vectorSpaceSearchOpt(query);
+		else if(rank)
+			return vectorSpaceSearch(query);
+		
+		return booleanSpaceSearch(query);
+	}
+	
+	public Set<Result>
+	vectorSpaceSearch(String query)
+	{
+		// TODO
+		return null;
+	}
+	
+	public Set<Result>
+	vectorSpaceSearchOpt(String query)
+	{
+		// TODO
+		return null;
+	}
+	
+	public Set<Result>
+	booleanSpaceSearch(String query)
+	{
+		/*
 		CharStream charStream = new ANTLRStringStream(query);
 	    booleanGrammarLexer lexer = new booleanGrammarLexer(charStream);
 	    TokenStream tokenStream = new CommonTokenStream(lexer);
@@ -80,23 +110,8 @@ public class Searcher {
 		ASTwalker walker = new ASTwalker(nodeStream);
 		
 		Set<Doc> docs = walker.prog();
-		Set<Searcher.Result> results;
-		if(rank)
-			results = new TreeSet<Searcher.Result>();
-		else
-			results = new HashSet<Searcher.Result>();
-		
-		// ranking .. 
-		for(Iterator<Doc> it=docs.iterator(); it.hasNext(); )
-			results.add(new Searcher.Result(it.next()));
-			
-		return results;
-	}
-	
-	public TreeSet<Searcher.Result>
-	rankResults(Set<Searcher.Result> results)
-	{
-		return new TreeSet<Searcher.Result>(results);
+		*/
+		return null;
 	}
 	
 }

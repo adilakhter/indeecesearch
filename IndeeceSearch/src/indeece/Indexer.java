@@ -56,25 +56,25 @@ public class Indexer {
 	    	
 	    	String title = "";
 	    	String body = "";
-	    	HashSet<Doc> corpus = new HashSet();
+	    	HashSet<Doc> corpus = new HashSet<Doc>();
 	    	Doc temp;
 	    	
 	    	NodeList nl = docEle.getElementsByTagName("REUTERS");
 	    	
 	    	if(nl != null && nl.getLength() > 0){
 	    		for(int i = 0;i < nl.getLength();i++){
-	    			Element el = (Element)nl.item(i);
-	    			
+	    			Element el = (Element)nl.item(i);    			
 	    			title = getTextValue(el,"TITLE");
 	    			body = getTextValue(el,"BODY");
+	    			if(title==null)
+	    				continue;
+	    			
+	    			
 	    			temp = new Doc(documentID,title,body);
 	    			corpus.add(temp);
 	    			documentID++;
 	    		}
 	    	}
-	    	
-	    	return corpus;
-	    }
 	    
 	    static String getTextValue(Element ele, String tagName) {
 			String textVal = null;
@@ -88,10 +88,18 @@ public class Indexer {
 		}
 	    
 	    public static Set<Doc> createCorpus(String indexFolder){
-	    		    
+		    
 	 	    ArrayList<File> files = Indexer.getFiles(indexFolder);
-	     	Indexer.parseXmlFile(files.get(0));
-	     	return Indexer.parseDocuments();
+	 	    HashSet<Doc> corpus = new HashSet<Doc>();
+	 	    
+	 	    for(int i = 0;i < files.size(); i++)
+	 	    {
+	 	    	System.out.println("Indexing file "+files.get(i).getName());
+		     	Indexer.parseXmlFile(files.get(i));
+		     	corpus.addAll(Indexer.parseDocuments());
+	 	    }
+	 	    
+	 	    return corpus;
 	    }
 	
 	public static Index getActiveIndex()

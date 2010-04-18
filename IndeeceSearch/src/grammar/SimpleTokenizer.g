@@ -9,5 +9,6 @@ options {
 }
 
 //Token def must be changed
-TOKEN : ('a'..'z' |'A'..'Z'|'0'..'9')+ ;
-WS : (' ' |'\t' |'\n' |'\r' | '\f')+      { $channel = HIDDEN;} ;
+
+WS : (' ' |'\t' |'\n' |'\r' | '\f')+      { skip(); $channel = HIDDEN;} ;
+TOKEN : (~(' ' |'\t' |'\n' |'\r' | '\f'))+ ;

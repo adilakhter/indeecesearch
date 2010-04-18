@@ -32,14 +32,17 @@ public class Index
 		SimpleTokenizer tokenizer;
 		String next;
 		String wholeDoc = doc.getTitle() + " " + doc.getBody();
+		Token nextToken;
 		
 		//Index 		
 		charStream = new ANTLRStringStream(wholeDoc);
 		tokenizer = new SimpleTokenizer(charStream);
-		while (tokenizer.nextToken() != null)
+		nextToken = tokenizer.nextToken();
+		while (nextToken != Token.EOF_TOKEN)
 		{
-			next = tokenizer.nextToken().getText();
-			if ( !entries.containsKey(next))
+			next = nextToken.getText();
+			nextToken = tokenizer.nextToken();
+			if ( !this.entries.containsKey(next))
 			{
 				PostingList postingList = new PostingList();
 				postingList.add(postingList.new Item(doc, 1));
@@ -48,16 +51,22 @@ public class Index
 			} else{
 				
 				PostingList postingList = this.entries.get(next);
+			
+				PostingList.Item currentItem ;
 				
-				for(Iterator<PostingList.Item> i = postingList.iterator(); i.hasNext();)
-				{
-					if (i.next().getDoc().getID() == doc.getID()){
-						i.next().increaseFrequency();
-					} else {
-						postingList.add(postingList.new Item(doc, 1));
-						this.entries.put(next, postingList);
+				Iterator<PostingList.Item> i = postingList.iterator(); 
+				
+				while(i.hasNext()) {
+					currentItem=i.next();
+					
+					if(currentItem.getDoc().getID()==doc.getID()) 
+						currentItem.increaseFrequency();
+					else {
+						postingList.add(postingList.new Item(doc,1));
+						break;
 					}
-				}				
+						
+				}						
 			}
 		}
 		

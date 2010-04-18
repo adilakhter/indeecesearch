@@ -2,10 +2,8 @@ package indeece;
 
 import grammar.SimpleTokenizer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import org.antlr.runtime.ANTLRStringStream;
@@ -19,12 +17,12 @@ public class Index
 	private HashMap<String,PostingList> entries = new HashMap<String,PostingList>();
 	
 	//Create the index of the given corpus
-	public Index(ArrayList<Doc> corpus){
+	public Index(Set<Doc> corpus){
 		super();
-	
-		for(int i = 0; i < corpus.size();i++)
+		Iterator<Doc> i = corpus.iterator();
+		while(i.hasNext())
 		{			
-			this.addDoc(corpus.get(i));		
+			this.addDoc(i.next());		
 		}
 	}
 	

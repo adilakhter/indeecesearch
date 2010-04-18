@@ -78,8 +78,12 @@ public class Searcher {
 	{
 		Index index = Indexer.getActiveIndex();
 		// gather set of documents that contain those terms
+		HashSet<Doc> docs = new HashSet<Doc>();
 		for(Iterator<String> termit = terms.iterator(); termit.hasNext(); ) {
-			//PostingList plist = index.getEntry(termit.next());
+			PostingList pl = index.getEntry(termit.next());
+			for(Iterator<PostingList.Item> plit = pl.iterator(); plit.hasNext(); ) {
+				docs.add(plit.next().getDoc());
+			}
 		}
 			
 		// TODO

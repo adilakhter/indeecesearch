@@ -58,13 +58,15 @@ public class Indeece {
 			fileIn.close();
 		}catch(IOException i)
 		{
-			i.printStackTrace();
-			return;
+			System.out.println("File '" +fileName + "' does not exist.");
+			//i.printStackTrace();
+			System.exit(0);
+			
 		}catch(ClassNotFoundException c)
 		{
 			System.out.println("Index class not found");
 			c.printStackTrace();
-			return;
+			System.exit(0);
 		}
 		
 		//Deserialize corpus with that corresponds to fileName
@@ -77,13 +79,14 @@ public class Indeece {
 			fileIn.close();
 		}catch(IOException i)
 		{
-			i.printStackTrace();
-			return;
+			System.out.println("File '" + fileName.substring(0, fileName.length()-4) + "Corpus.dat" + "' does not exist.");
+			//i.printStackTrace();
+			System.exit(0);
 		}catch(ClassNotFoundException c)
 		{
 			System.out.println("Index class not found");
 			c.printStackTrace();
-			return;
+			System.exit(0);
 		}
 		Indeece.index = index;
 		Indeece.corpus = corpus;

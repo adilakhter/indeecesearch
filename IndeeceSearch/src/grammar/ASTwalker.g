@@ -21,21 +21,20 @@ prog  returns [Set<Doc>  result]
       ;
       
 expr   returns [Set<Doc>  result]
-      : ^( 'AND' op1=expr op2=expr) {//result = op1.and(op2);}
+      : ^( 'AND' op1=expr op2=expr) { 
                                         result = Doc.and(op1,op2);
                                     }
       
-      |^( 'OR' op1=expr op2=expr)   {   //result = op1.or(op2); 
+      |^( 'OR' op1=expr op2=expr)   {    
                                         result = Doc.or(op1,op2);
                                     }
        
       
-      |^( 'NOT' op1=expr)           {   //result=op1.not(Indeece.getCorpus()); 
+      |^( 'NOT' op1=expr)         {    
                                         result=Doc.not(op1,Indeece.getCorpus());
                                     }
        
       | TOKEN                       {
-                                        //result = Indeece.getActiveIndex().getPostingList($TOKEN.getText());
                                         result = Indeece.getActiveIndex().getDocumentSet($TOKEN.getText());
                                     }
       ; 

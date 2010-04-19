@@ -17,11 +17,11 @@ options {
 prog  : expr EOF;
 
 expr  :
-    multExpr(('_AND_'^|'_OR_'^)multExpr)*
+    multExpr(('AND'^|'OR'^)multExpr)*
   ; 
 
 multExpr
-  : '_NOT_'^? atom
+  : 'NOT'^? atom
   ;
 
 atom  : TOKEN
@@ -29,5 +29,5 @@ atom  : TOKEN
   ;
 
 //Token def must be changed
-TOKEN : ('a'..'z' |'A'..'Z'|'0'..'9')+ ;
+TOKEN : ('a'..'z' |'A'..'Z'|'0'..'9')+ ; 
 WS : (' ' |'\t' |'\n' |'\r' | '\f')+      { $channel = HIDDEN;} ;

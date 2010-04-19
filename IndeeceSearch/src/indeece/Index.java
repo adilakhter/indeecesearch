@@ -25,6 +25,7 @@ public class Index
 		int docNumber=corpus.size();
 		while(i.hasNext())
 		{			
+			if(current%50==0)
 			System.out.println("Indexing "+ current +" out of " + docNumber);
 			current++;
 			this.addDoc(i.next());		

@@ -50,15 +50,18 @@ public class MainCmdLine {
 		// catch Searcher() errors (TODO)
 		
 		// start user interaction
-	/*	while(true)
+		while(true)
 		{
 			// display prompt
 			System.out.print("Query: ");
+			
+			int resultCount=1;
 			// display results
-			for(Iterator<Searcher.Result> it=searcher.search(input.readLine()).iterator(); it.hasNext(); )
-				System.out.println(it.next());
+			for(Iterator<Searcher.Result> it=searcher.search(input.readLine()).iterator(); it.hasNext(); ) {
+				System.out.println(resultCount++ +"." +it.next().getDoc().getTitle());
+			}
 		}
-		*/
+		
 	}
 
 }

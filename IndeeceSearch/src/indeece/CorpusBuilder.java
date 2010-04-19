@@ -43,8 +43,8 @@ public class CorpusBuilder {
 	    			//fileNames do not contain the rest of the path at this moment, so it is added
 	    			fileNames[i] = indexDir.getAbsolutePath() + "/" + fileNames[i];
 	    			//only .xml files
-	    			fileNames[i].getChars(fileNames[i].length()-4,fileNames[i].length(), extension, 0);
-	    			if(String.valueOf(extension).contentEquals(".xml")){
+	    			fileNames[i].getChars(fileNames[i].length()-3,fileNames[i].length(), extension, 0);
+	    			if(String.valueOf(extension).contentEquals("xml")){
 	    				files.add(new File(fileNames[i]));
 	    			}
 	    		}

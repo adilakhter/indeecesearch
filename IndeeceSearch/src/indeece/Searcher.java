@@ -48,6 +48,11 @@ public class Searcher {
 			// TODO
 			return "result for: " + doc;
 		}
+		
+		public Doc getDoc()
+		{
+			return this.doc;
+		}
 	}
 	private int kappa = 10;
 	private boolean rank;
@@ -86,12 +91,13 @@ public class Searcher {
 	{
 		Preprocessed terms = new Preprocessed(query);
 		
+		
 		if(rank && rankopt)
 			return vectorSpaceSearchOpt(terms);
 		else if(rank)
 			return vectorSpaceSearch(terms);
 		
-		return booleanSpaceSearch(terms);
+		return booleanSpaceSearch(query);
 	}
 	
 	// Return the first kappa most relevant documents.
@@ -144,10 +150,11 @@ public class Searcher {
 	}
 	
 	public Set<Result>
-	booleanSpaceSearch(Preprocessed terms) throws RecognitionException
+	booleanSpaceSearch(String query) throws RecognitionException
 	{
-		
-		CharStream charStream = new ANTLRStringStream(terms.toString());
+		//System.out.println("Terms:" + terms.toString());
+//		CharStream charStream = new ANTLRStringStream(terms.toString());
+		CharStream charStream = new ANTLRStringStream(query);
 	    booleanGrammarLexer lexer = new booleanGrammarLexer(charStream);
 	    TokenStream tokenStream = new CommonTokenStream(lexer);
 		booleanGrammarParser parser = new booleanGrammarParser(tokenStream);
@@ -161,9 +168,19 @@ public class Searcher {
 		//Create an AST traversal tool
 		ASTwalker walker = new ASTwalker(nodeStream);
 		
-		PostingList docs = walker.prog();
+		return getResults(walker.prog());
+	}
+	
+	public Set<Result> 
+	getResults(PostingList resultList) {
 		
-		return null;
+		HashSet<Result> endResults = new HashSet<Result>();
+		Iterator<PostingList.Item> docIt = resultList.iterator();
+		while(docIt.hasNext()) {
+			Result r = new Result(docIt.next().getDoc());
+			endResults.add(r);
+		}
+		return endResults;
 	}
 	
 }

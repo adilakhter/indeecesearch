@@ -44,7 +44,7 @@ public class Preprocessed extends HashSet<String> {
 	
 	public static void main(String args[])
 	{
-		Preprocessed t = new Preprocessed("hello world hello.to,you;to!");
+		Preprocessed t = new Preprocessed("Hello world hello.to,you;to!");
 		
 		for(Iterator<String> it = t.iterator(); it.hasNext(); ) {
 			System.out.println("term: " + it.next());

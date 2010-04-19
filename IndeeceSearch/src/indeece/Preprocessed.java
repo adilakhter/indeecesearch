@@ -22,7 +22,11 @@ public class Preprocessed extends HashSet<String> {
 		}
 	}
 	
-	private String makeTerm(String word)
+	public Preprocessed() {
+		super();
+	}
+	
+	public String makeTerm(String word)
 	{
 		// Implement stemming, permuterm (TODO)
 		return word;

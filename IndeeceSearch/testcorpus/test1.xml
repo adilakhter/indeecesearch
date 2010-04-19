@@ -13,7 +13,17 @@ term13 term14 common2
 <REUTERS>
 <TITLE>Document2 term21 term22 term23</TITLE>
 <BODY>
-common1 common2
+common1 common2.common3
+running runner building builder
+</BODY>
+</REUTERS>
+
+<!-- test document 3 -->
+<REUTERS>
+<TITLE>Document3 term31 term32 term33</TITLE>
+<BODY>
+term31. Term32.
+common1,common2 common3.
 running runner building builder
 </BODY>
 </REUTERS>

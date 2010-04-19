@@ -17,7 +17,7 @@ public class Indeece
 	public static void createIndex(CorpusBuilder cBuilder, boolean stemming, boolean permuterm) {
 		corpus = cBuilder.getCorpus();
 		index  = new Index(corpus, stemming, permuterm);
-		permutermIndex = new PermutermTree(index);
+		//permutermIndex = new PermutermTree(index);
 	}
 	
 	public static Index getActiveIndex() {
@@ -59,6 +59,7 @@ public class Indeece
 
 	public static void loadIndeece(String fileName)
 	{
+		System.err.println("Deserializing index from "+fileName);
 		//Deserialize index with fileName
 		Index index = null;
 		try{
@@ -70,8 +71,8 @@ public class Indeece
 		}catch(IOException i)
 		{
 			System.out.println("File '" +fileName + "' does not exist.");
-			//i.printStackTrace();
-			System.exit(0);
+			i.printStackTrace();
+			System.exit(1);
 			
 		}catch(ClassNotFoundException c)
 		{

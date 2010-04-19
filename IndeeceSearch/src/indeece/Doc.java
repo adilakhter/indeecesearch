@@ -50,10 +50,13 @@ public class Doc implements Comparable<Doc>,Serializable{
 	// Returns the intersection of set1 and set2	
 	public static Set<Doc> and(Set<Doc> set1, Set<Doc> set2) {
 		
-		if((set1 == null) || (set2 == null))
+		if((set1 == null) || (set2 == null)) {
+			System.err.println("Doc.and() returning null!");
 			return new TreeSet<Doc>();
-		
-		TreeSet<Doc> result = new TreeSet<Doc>();
+		}
+		set1.retainAll(set2);
+		return set1;
+		/*TreeSet<Doc> result = new TreeSet<Doc>();
 		Iterator<Doc> op1 = set1.iterator();
 		Iterator<Doc> op2 = set2.iterator();
 		
@@ -75,7 +78,8 @@ public class Doc implements Comparable<Doc>,Serializable{
 			else
 				current2 = getNext(op2);
 		}
-		return result;
+		
+		return result;*/
 	}
 	
 	private static Doc getNext(Iterator<Doc> it) {

@@ -39,9 +39,6 @@ public class Index implements java.io.Serializable
 			current++;
 			this.addDoc(i.next());		
 		}
-		
-		System.err.println("Entries:");
-		System.err.println(this.entries);
 	}
 	
 	public void addDoc(Doc doc)
@@ -84,7 +81,7 @@ public class Index implements java.io.Serializable
 	public String preprocess(String content)
 	{
 		String	ret = "";
-		String	words[]	= content.split("[\\s,.]");
+		String	words[]	= content.split("[\\s,.-]");
 		
 		for(int i=0; i < words.length; i++) {
 			String term = preprocessWord(words[i]);
@@ -110,7 +107,6 @@ public class Index implements java.io.Serializable
 		// perform stemming
 		if(this.stemming)
 			term = stemmer.stemTerm(term);
-		// permuterm (TODO)
 		
 		return term;
 	}

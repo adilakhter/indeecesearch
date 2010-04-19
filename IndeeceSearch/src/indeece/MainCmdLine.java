@@ -19,6 +19,8 @@ public class MainCmdLine
 		OptionSet opts = (new OptionParser("rb:v:os")).parse(args);
 		if(!(opts.has("v") ^ opts.has("b")))
 			usage();
+		if(opts.has("r") && opts.has("w"))
+			usage();
 		
 		if(opts.has("v")) 
 			pathName = (String)opts.valueOf("v");
@@ -29,7 +31,8 @@ public class MainCmdLine
 			// create inverted index from corpusDir
 			try {
 				Indeece.createIndex(new CorpusBuilder(pathName), opts.has("s"), opts.has("p"));
-				Indeece.storeIndeece(pathName);
+				if(opts.has("w"))
+					Indeece.storeIndeece(pathName);
 			} catch(IOException e) {
 				System.err.println("Error indexing "+pathName);
 				e.printStackTrace();
@@ -73,7 +76,7 @@ public class MainCmdLine
 	
 	private static void usage()
 	{
-		System.err.println("[-sp] <-b | -v [-o]> corpusDir");
+		System.err.println("[-s] [-r|-w] <-b | -v [-o]> corpusDir");
 		System.exit(1);
 	}
 }

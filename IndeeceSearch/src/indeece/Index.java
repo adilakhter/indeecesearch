@@ -59,6 +59,13 @@ public class Index
 			
 				PostingList.Item currentItem ;
 				
+				if(postingList.contains(postingList.new Item(doc,0))){
+					currentItem = postingList.floor(postingList.new Item(doc,0));
+					currentItem.increaseFrequency();
+				} else{
+					postingList.add(postingList.new Item(doc,1));
+				}
+				/*
 				Iterator<PostingList.Item> i = postingList.iterator(); 
 				
 				while(i.hasNext()) {
@@ -71,7 +78,7 @@ public class Index
 						break;
 					}
 						
-				}						
+				}		*/				
 			}
 		}
 		

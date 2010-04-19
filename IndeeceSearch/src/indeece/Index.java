@@ -128,5 +128,8 @@ public class Index implements java.io.Serializable
 		}
 		return null;
 	}
-
+	
+	public Set<String> getTerms(){	
+		return this.entries.keySet();
+	}
 }

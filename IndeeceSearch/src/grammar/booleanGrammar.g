@@ -17,11 +17,11 @@ options {
 prog  : expr EOF;
 
 expr  :
-    multExpr(('AND'^|'OR'^)multExpr)*
+    multExpr(('_AND_'^|'_OR_'^)multExpr)*
   ; 
 
 multExpr
-  : 'NOT'^? atom
+  : '_NOT_'^? atom
   ;
 
 atom  : TOKEN

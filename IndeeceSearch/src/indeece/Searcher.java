@@ -151,7 +151,7 @@ public class Searcher {
 	booleanSpaceSearch(String query) throws RecognitionException
 	{
 		//System.out.println("Terms:" + terms.toString());
-//		CharStream charStream = new ANTLRStringStream(terms.toString());
+		//CharStream charStream = new ANTLRStringStream(terms.toString());
 		CharStream charStream = new ANTLRStringStream(query);
 	    booleanGrammarLexer lexer = new booleanGrammarLexer(charStream);
 	    TokenStream tokenStream = new CommonTokenStream(lexer);

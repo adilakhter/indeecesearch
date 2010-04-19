@@ -17,18 +17,36 @@ public abstract class Model
 	public abstract Set<Result> search(String query) throws Exception;
 	
 	// inner class: abstraction for a search result.
-	public class Result
+	public class Result implements Comparable<Result>
 	{
-		private Doc doc = null;
+		private Doc		doc = null;
+		private float	score = 0;
+		
+		public Result(Doc d, float score)
+		{
+			this.doc	= d;
+			this.score	= score;
+		}
 		
 		public Result(Doc d)
 		{
-			this.doc = d;
+			this(d, 0);
+		}
+		
+		public float getScore()
+		{
+			return this.score;
+		}
+
+		@Override
+		public int compareTo(Result other) 
+		{
+			return (int)(this.score - other.score);
 		}
 		
 		public String toString()
 		{
-			return this.doc.getTitle();
+			return super.toString()+" (score: "+this.score+")";
 		}
 	}
 }

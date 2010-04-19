@@ -2,23 +2,20 @@ package indeece;
 
 import filter.IFilter;
 import filter.StopwordFilter;
-import grammar.SimpleTokenizer;
-import indeece.PostingList.Item;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.runtime.CharStream;
-import org.antlr.runtime.Token;
-
 import stemmer.IStemmer;
 import stemmer.PorterStemmer;
 
 public class Index implements java.io.Serializable
 {
+
+	private static final long serialVersionUID = 1L;
+
 	//A list of entries forms the Index
 	//private ArrayList<Entry> entries;
 	private HashMap<String,PostingList> entries = new HashMap<String,PostingList>();
@@ -86,17 +83,20 @@ public class Index implements java.io.Serializable
 	// convert content to a string of space separated terms.
 	public String preprocess(String content)
 	{
-		String	ret = new String("");
+		String	ret = "";
 		String	words[]	= content.split("[\\s,.]");
 		
 		for(int i=0; i < words.length; i++) {
 			String term = preprocessWord(words[i]);
 			if(term != null) {
-				ret = ret + " " + preprocessWord(words[i]);
+				if(ret == "")
+					ret = term;
+				else 
+					ret = ret + " " + term;
 			}
 		}
-
-		return ret.trim();
+		
+		return ret;
 	}
 	
 	public String preprocessWord(String word)

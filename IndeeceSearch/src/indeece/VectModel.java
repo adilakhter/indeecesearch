@@ -20,7 +20,7 @@ public class VectModel extends Model {
 	public Set<Result> search(String rawQuery) 
 	{
 		String query = index.preprocess(rawQuery);
-		
+		System.err.println("query: " + query);
 		// record query terms and their idf values
 		// in the idf_q dictionary.
 		// also, record relevant documents in docsSet.
@@ -32,13 +32,16 @@ public class VectModel extends Model {
 			PostingList plist = index.getPostingList(words[i]);
 			if(plist == null)
 				continue;
-			System.err.println("plist("+words[i]+"): "+plist);
 			// record idf value.
 			idf_q.put(words[i], idfCalc(words[i]));
 			// record relevant documents.
 			Iterator<PostingList.Item>	plItemIter = plist.iterator();
-			while(plItemIter.hasNext())
-				docSet.add(plItemIter.next().getDoc());
+			System.err.println("plist("+words[i]+"): ");
+			while(plItemIter.hasNext()) {
+				Doc d = plItemIter.next().getDoc();
+				System.err.println("-> "+d);
+				docSet.add(d);
+			}
 		}
 		
 		// prune terms with low idf if necessary.
@@ -47,14 +50,14 @@ public class VectModel extends Model {
 		}
 		
 		// calculate cosine score and make a Result entry for each relevant document.
-		TreeSet<RankedResult>		results		= new TreeSet<RankedResult>();
-		Iterator<Doc>				docSetIter	= docSet.iterator();
+		TreeSet<Result>	results		= new TreeSet<Result>();
+		Iterator<Doc>	docSetIter	= docSet.iterator();
 		while(docSetIter.hasNext()) {
 			Doc d = docSetIter.next();
-			results.add(new RankedResult(d, cosineScore(d, idf_q)));
+			results.add(new Result(d, cosineScore(d, idf_q)));
 		}
 		
-		return new HashSet<Result>();
+		return results;
 	}
 	
 	private float idfCalc(String term)
@@ -65,27 +68,6 @@ public class VectModel extends Model {
 	private float cosineScore(Doc d, HashMap<String, Float> idf_q)
 	{
 		return 0;
-	}
-	
-	public class RankedResult extends Result implements Comparable<RankedResult>
-	{
-		private float score;
-		public RankedResult(Doc d, float score)
-		{
-			super(d);
-			this.score = score;
-		}
-		
-		public float getScore()
-		{
-			return this.score;
-		}
-
-		@Override
-		public int compareTo(RankedResult other) 
-		{
-			return (int)(this.score - other.score);
-		}
 	}
 
 }

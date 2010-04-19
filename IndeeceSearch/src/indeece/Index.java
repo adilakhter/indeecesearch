@@ -45,6 +45,7 @@ public class Index implements Serializable
 		String next;
 		String wholeDoc = doc.getTitle() + " " + doc.getBody();
 		Token nextToken;
+		Preprocessed preprocessor = new Preprocessed();
 		
 		//Index 		
 		charStream = new ANTLRStringStream(wholeDoc);
@@ -53,7 +54,16 @@ public class Index implements Serializable
 		while (nextToken != Token.EOF_TOKEN)
 		{
 			next = nextToken.getText();
+			
+			//Preprocessor is called to convert the string
+			next = preprocessor.makeTerm(next);
+			//Get next token for the next iteration
 			nextToken = tokenizer.nextToken();
+			//if next = empty (stopword) continue to the next token
+			if(next == ""){
+				continue;
+			}			
+			
 			if ( !this.entries.containsKey(next))
 			{
 				PostingList postingList = new PostingList();

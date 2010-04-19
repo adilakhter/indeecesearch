@@ -2,6 +2,9 @@ package indeece;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import filter.IFilter;
+import filter.StopwordFilter;
+
 import stemmer.IStemmer;
 import stemmer.PorterStemmer;
 
@@ -9,9 +12,10 @@ import stemmer.PorterStemmer;
 public class Preprocessed extends HashSet<String> {
 	
 	IStemmer stemmer = new PorterStemmer(); 
+	IFilter stopwordFilter = new StopwordFilter();
 	
 	public Preprocessed(String body)
-	{
+	{	
 		super();
 		// comma, dot, semicolon, etc..
 		String words[] = body.split("[\\s;,.;]");
@@ -28,6 +32,14 @@ public class Preprocessed extends HashSet<String> {
 	
 	public String makeTerm(String word)
 	{
+		
+		
+		word = word.toLowerCase();
+		word = stopwordFilter.Filter(word);
+		if(word == ""){
+			return "";
+		}
+		
 		// Implement stemming, permuterm (TODO)
 		return word;
 	}

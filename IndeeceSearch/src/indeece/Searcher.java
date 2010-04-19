@@ -72,7 +72,8 @@ public class Searcher {
 		// Build index from set of documents (We need a static object for the ASTwalker)
 		Indeece.createIndex(corpus.getCorpus());
 		
-		Indeece.storeIndeece(Indeece.getActiveIndex(), Indeece.getCorpus(), "testIndex");
+		//Serialize both index and corpus 
+		//Indeece.storeIndeece(Indeece.getActiveIndex(), Indeece.getCorpus(), "testIndex");
 	}
 	
 	//Runs Searcher on the existing index found in 'indexFile'

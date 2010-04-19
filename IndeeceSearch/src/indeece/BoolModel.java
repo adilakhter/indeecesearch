@@ -27,21 +27,22 @@ public class BoolModel extends Model {
 	public Set<Result> search(String rawQuery)
 	throws Exception
 	{	
+		// parse query.
 		CharStream charStream = new ANTLRStringStream(rawQuery);
 	    booleanGrammarLexer lexer = new booleanGrammarLexer(charStream);
 	    TokenStream tokenStream = new CommonTokenStream(lexer);
 		booleanGrammarParser parser = new booleanGrammarParser(tokenStream);
 		
-		//Build AST
+		// build AST.
 		prog_return AST = parser.prog();
 		
-		//Get AST nodes
+		// get AST nodes.
 		CommonTreeNodeStream nodeStream = new CommonTreeNodeStream(AST.getTree());
 		
-		//Create an AST traversal tool
+		// create an AST traversal tool.
 		ASTwalker walker = new ASTwalker(nodeStream);
 		
-		//Create the results set from the posting list
+		// create the results set from the posting list.
 		HashSet<Result> 			results 	= new HashSet<Result>();
 		Set<Doc>					docSet		= walker.prog();
 		if(docSet == null)

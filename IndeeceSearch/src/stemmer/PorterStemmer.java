@@ -111,16 +111,16 @@ public class PorterStemmer implements IStemmer {
 	{
 		stemmerIndexes.currentIndex = stemmerIndexes.stemmerBufferLength - 1; // setting the index to the last index of the word
 		
-		if( stemmerIndexes.currentIndex  > 1)
+		if( stemmerIndexes.currentIndex  > 0)
 		{
 			Iterator<IStemmerCommand> i = commands.iterator();
 		    while(i.hasNext()) {
 		    	i.next().Execute(stemmerBuffer, stemmerIndexes);
 		    }
-		    
-		    stemmerIndexes.finalLength = stemmerIndexes.currentIndex + 1;
-		    stemmerIndexes.initStemmerIndexes();
+		      
 		}
+		stemmerIndexes.finalLength = stemmerIndexes.currentIndex + 1;
+	    stemmerIndexes.initStemmerIndexes();
 	}
 
 	/**

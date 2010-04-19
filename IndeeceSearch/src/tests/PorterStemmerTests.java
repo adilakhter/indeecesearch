@@ -326,6 +326,9 @@ public class PorterStemmerTests extends TestCase
 				,{"DISable    " , "disabl"}
 				,{"KILODISable    " , "disabl"}
 				,{"KIL,,,,....ODISable    " , "disabl"}
+				,{"s" , "s"}
+				,{"as" , "a"}
+				,{"" , ""}
 		};
 		invokeAndAssertExpectationMet(testWords);
 		

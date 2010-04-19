@@ -159,7 +159,7 @@ public abstract class StemmerCommandBase implements IStemmerCommand
 	
 	protected boolean isCurrentBufferNotEmpty(char [] currentBuffer, PorterStemmerIndexes psIndexes)
 	{
-		return (currentBuffer.length  > 1) &&  (psIndexes.currentIndex >=0) ;
+		return (currentBuffer.length  > 1) &&  (psIndexes.currentIndex >0) ;
 	}
 	
 	public abstract void Execute(char [] currentBuffer, PorterStemmerIndexes psIndexes);

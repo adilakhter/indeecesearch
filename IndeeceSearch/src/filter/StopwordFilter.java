@@ -8,7 +8,7 @@ import java.util.Vector;
 import common.NullString;
 
 public class StopwordFilter implements IFilter {
-	private static final String STOP_WORD_FILE  = "bin\\filter\\Stopwords.txt"; 
+	private static  String STOP_WORD_FILE  = "bin\\filter\\Stopword.txt"; 
 	public static HashSet<String> stopWords = null;
 	
 	public static void loadStopWords()

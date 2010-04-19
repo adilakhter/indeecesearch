@@ -11,7 +11,39 @@ public class PermutermGeneratorTests  extends TestCase
 	{
 		String testString = "hello";
 		
-		String [] expectedStrings = {"hello$" , "ello$h" , "llo$he" , "lo$hel" , "o$hell" , "$hello"};
+		String [] expectedStrings = {
+									"hello$" , 
+									"ello$h" , 
+									"llo$he" , 
+									"lo$hel" , 
+									"o$hell" , 
+									"$hello"
+									};
+		
+		ITermGenerator generator = new PermutermGenerator();
+		String [] actualPermuterms = generator.generate(testString);
+		
+		for ( int index = 0 ; index< actualPermuterms.length ; index ++ )
+		{
+			assertEquals(actualPermuterms[index] , expectedStrings[index]);
+		}
+	}
+	
+	public void testPermutermGeneratorTest2()
+	{
+		String testString = "cornell";
+		
+		String [] expectedStrings = {
+				"cornell$",
+				"ornell$c",
+				"rnell$co",
+				"nell$cor",
+				"ell$corn",
+				"ll$corne",
+				"l$cornel",
+				"$cornell"
+
+			};
 		
 		ITermGenerator generator = new PermutermGenerator();
 		String [] actualPermuterms = generator.generate(testString);

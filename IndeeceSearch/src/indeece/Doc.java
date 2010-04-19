@@ -4,8 +4,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
+import java.io.*;
 
-public class Doc implements Comparable<Doc>{
+public class Doc implements Comparable<Doc>,Serializable{
 	private int ID;
 	private String title;
 	private String body;

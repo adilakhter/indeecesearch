@@ -70,15 +70,19 @@ public class Searcher {
 		CorpusBuilder corpus = new CorpusBuilder(docsDir);
 		
 		// Build index from set of documents (We need a static object for the ASTwalker)
-		Indeece.createIndex(corpus);
+		Indeece.createIndex(corpus.getCorpus());
+		
+		Indeece.storeIndeece(Indeece.getActiveIndex(), Indeece.getCorpus(), "testIndex");
 	}
 	
+	//Runs Searcher on the existing index found in 'indexFile'
 	public
 	Searcher(boolean rank, boolean rankopt, String indexFile)
 	{
 		this.rank = rank;
 		this.rankopt = rankopt;
-		// unmarshall indexer from file (TODO)
+		System.out.println("Loading index from "+indexFile +". Please wait...");
+		Indeece.loadIndeece(indexFile);
 	}
 	
 	// Returns results from boolean space search if ranking is disabled.

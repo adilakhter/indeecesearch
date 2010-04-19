@@ -38,7 +38,7 @@ public class MainCmdLine {
 
 		if(opts.has("i")) {
 			if(opts.has("d") || opts.has("s")) usage();
-			if(!opts.hasArgument("f")) usage();
+			//if(!opts.hasArgument("f")) usage();
 			// load index file from disk
 			searcher = new Searcher(rank, rankopt, (String)opts.valueOf("i"));
 		} else if(opts.has("d")) {

@@ -11,9 +11,15 @@ import java.util.Arrays;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.Token;
+import java.io.*;
 
-public class Index
+public class Index implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	//A list of entries forms the Index
 	//private ArrayList<Entry> entries;
 	private HashMap<String,PostingList> entries = new HashMap<String,PostingList>();

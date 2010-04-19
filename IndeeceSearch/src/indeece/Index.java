@@ -91,11 +91,12 @@ public class Index implements java.io.Serializable
 		
 		for(int i=0; i < words.length; i++) {
 			String term = preprocessWord(words[i]);
-			if(term != null)
+			if(term != null) {
 				ret = ret + " " + preprocessWord(words[i]);
+			}
 		}
 
-		return ret;
+		return ret.trim();
 	}
 	
 	public String preprocessWord(String word)

@@ -12,12 +12,12 @@ public class Indeece
 {
 	private static Index index;
 	private static Set<Doc> corpus;
-	private static PermutermIndex permutermIndex;
+	private static PermutermTree permutermIndex;
 	
 	public static void createIndex(CorpusBuilder cBuilder, boolean stemming, boolean permuterm) {
 		corpus = cBuilder.getCorpus();
 		index  = new Index(corpus, stemming, permuterm);
-		permutermIndex = new PermutermIndex(index);
+		permutermIndex = new PermutermTree(index);
 	}
 	
 	public static Index getActiveIndex() {
@@ -28,7 +28,7 @@ public class Indeece
 		return corpus;
 	}
 	
-	public static PermutermIndex getPermutermIndex(){
+	public static PermutermTree getPermutermIndex(){
 		return permutermIndex;
 	}
 
@@ -101,7 +101,7 @@ public class Indeece
 		}
 		Indeece.index = index;
 		Indeece.corpus = corpus;
-		Indeece.permutermIndex = new PermutermIndex(index);
+		Indeece.permutermIndex = new PermutermTree(index);
 		System.out.println("Loaded successfully index and corresponding corpus from " +fileName);
 	}
 }

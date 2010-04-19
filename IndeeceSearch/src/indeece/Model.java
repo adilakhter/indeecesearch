@@ -46,7 +46,7 @@ public abstract class Model
 		
 		public String toString()
 		{
-			return super.toString()+" (score: "+this.score+")";
+			return this.doc.getTitle()+" (score: "+this.score+")";
 		}
 	}
 }

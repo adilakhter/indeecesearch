@@ -3,6 +3,7 @@ package indeece;
 import grammar.SimpleTokenizer;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Arrays;
@@ -76,6 +77,20 @@ public class Index
 	public PostingList getPostingList(String term){
 		if(this.entries.containsKey(term)) {
 			return this.entries.get(term);
+		}
+		return null;
+	}
+	
+	//Returns the set of documents (if any) found 
+	// in the posting list of term 'term'
+	public Set<Doc> getDocumentSet(String term){
+		if(this.entries.containsKey(term)) {
+			Iterator<PostingList.Item> listIt = this.entries.get(term).iterator();
+			HashSet<Doc> docList = new HashSet<Doc>();
+			while(listIt.hasNext()) {
+				docList.add(listIt.next().getDoc());
+			}
+			return docList;
 		}
 		return null;
 	}

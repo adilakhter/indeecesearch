@@ -9,26 +9,34 @@ options {
 @header {
   package grammar;
   import indeece.Indeece;
-  import indeece.PostingList;
+  import indeece.Doc;
+  
+  import java.util.Set;
   
 }
 
 
-prog  returns [PostingList  result]
+prog  returns [Set<Doc>  result]
       : op1=expr EOF         { result=op1;}
       ;
       
-expr   returns [PostingList  result]
-      : ^( 'AND' op1=expr op2=expr)  {result = op1.and(op2);}
+expr   returns [Set<Doc>  result]
+      : ^( 'AND' op1=expr op2=expr) {//result = op1.and(op2);}
+                                        result = Doc.and(op1,op2);
+                                    }
       
-      |^( 'OR' op1=expr op2=expr)   {result = op1.or(op2); }
+      |^( 'OR' op1=expr op2=expr)   {   //result = op1.or(op2); 
+                                        result = Doc.or(op1,op2);
+                                    }
        
       
-      |^( 'NOT' op1=expr)       {result=op1.not(Indeece.getCorpus()); }
-      
-      
-      
+      |^( 'NOT' op1=expr)           {   //result=op1.not(Indeece.getCorpus()); 
+                                        result=Doc.not(op1,Indeece.getCorpus());
+                                    }
        
-      | TOKEN                {result = Indeece.getActiveIndex().getPostingList($TOKEN.getText());}
+      | TOKEN                       {
+                                        //result = Indeece.getActiveIndex().getPostingList($TOKEN.getText());
+                                        result = Indeece.getActiveIndex().getDocumentSet($TOKEN.getText());
+                                    }
       ; 
  

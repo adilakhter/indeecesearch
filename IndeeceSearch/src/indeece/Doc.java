@@ -1,6 +1,11 @@
 package indeece;
 
-public class Doc {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class Doc implements Comparable<Doc>{
 	private int ID;
 	private String title;
 	private String body;
@@ -39,5 +44,64 @@ public class Doc {
 	
 	public String toString() {
 		return this.title;
+	}
+	
+	// Returns the intersection of set1 and set2	
+	public static Set<Doc> and(Set<Doc> set1, Set<Doc> set2) {
+		
+		TreeSet<Doc> result = new TreeSet<Doc>();
+		Iterator<Doc> op1 = set1.iterator();
+		Iterator<Doc> op2 = set2.iterator();
+		
+		Doc current1 = getNext(op1);
+		Doc current2 = getNext(op2);
+		
+		while(current1!=null && current2!=null) {
+		
+			//If is the same document
+			if(current1.getID() == current2.getID()) {
+				result.add(current1);
+				current1 = getNext(op1);
+				current2 = getNext(op2);
+			}
+			//If op2 is ahead of op1
+			else if(current1.getID() < current2.getID()) 
+				current1 = getNext(op1);
+			//If op1 is ahead of op2
+			else
+				current2 = getNext(op2);
+		}
+		return result;
+	}
+	
+	private static Doc getNext(Iterator<Doc> it) {
+		Doc nextDoc;
+		try {
+			nextDoc = it.next();
+		}
+		catch(NoSuchElementException e) {
+			nextDoc = null;
+		}
+		return nextDoc;
+	}
+	
+	// Returns the union of this and the other set
+	public static Set<Doc> or(Set<Doc> set1, Set<Doc> set2) {
+		TreeSet<Doc> result = new TreeSet<Doc>(set1);
+		result.addAll(set2);
+		return result;
+	}
+	
+	//Returns the complement of the corpus	
+	public static Set<Doc> not(Set<Doc> set1,Set<Doc> corpus) {
+		TreeSet<Doc> result = new TreeSet<Doc>(corpus);
+		result.removeAll(set1);
+		return result;
+	}
+	
+	@Override
+	public int compareTo(Doc arg0) {
+		// TODO Auto-generated method stub
+		return this.getID()-arg0.getID();
 	}
 }

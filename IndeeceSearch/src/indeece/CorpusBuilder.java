@@ -8,6 +8,7 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 public class CorpusBuilder {
 	private Set<Doc> corpus;
@@ -19,7 +20,7 @@ public class CorpusBuilder {
 	public CorpusBuilder(String corpusFolder) throws IOException {
 		//Get the files in the directory
  	    ArrayList<File> files = getFiles(corpusFolder);
- 	    corpus = new HashSet<Doc>();
+ 	    corpus = new TreeSet<Doc>();
  	    
  	    //For every file parse it create corresponding Documents
  	    for(int i = 0;i < files.size(); i++)

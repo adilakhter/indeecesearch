@@ -170,14 +170,12 @@ public class Searcher {
 	}
 	
 	public Set<Result> 
-	getResults(PostingList resultList) {
+	getResults(Set<Doc> resultSet) {
 		HashSet<Result> endResults = new HashSet<Result>();
-		if(resultList != null) {
-			Iterator<PostingList.Item> docIt = resultList.iterator();
-			while(docIt.hasNext()) {
-				Result r = new Result(docIt.next().getDoc());
-				endResults.add(r);
-			}
+		if(resultSet!= null) {
+			Iterator<Doc> docIt = resultSet.iterator();
+			while(docIt.hasNext())
+				 endResults.add(new Result(docIt.next()));
 		}
 		return endResults;
 	}

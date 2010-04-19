@@ -58,7 +58,7 @@ public class MainCmdLine {
 			int resultCount=1;
 			// display results
 			for(Iterator<Searcher.Result> it=searcher.search(input.readLine()).iterator(); it.hasNext(); ) {
-				System.out.println(resultCount++ +"." +it.next().getDoc().getTitle());
+				System.out.println(resultCount++ +"." +it.next());
 			}
 		}
 		

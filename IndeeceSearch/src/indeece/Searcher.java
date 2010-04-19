@@ -4,6 +4,7 @@ import grammar.booleanGrammarLexer;
 import grammar.booleanGrammarParser;
 import grammar.booleanGrammarParser.prog_return;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
@@ -45,8 +46,7 @@ public class Searcher {
 		public String 
 		toString()
 		{
-			// TODO
-			return "result for: " + doc;
+			return getDoc() + " ("+this.score+")";
 		}
 		
 		public Doc getDoc()
@@ -61,6 +61,7 @@ public class Searcher {
 	//Builds an index given a corpus directory "docsDir"
 	public 
 	Searcher(boolean rank, boolean rankopt, boolean stemming, String docsDir)
+	throws IOException
 	{
 		this.rank = rank;
 		this.rankopt = rankopt;
@@ -70,8 +71,6 @@ public class Searcher {
 		
 		// Build index from set of documents (We need a static object for the ASTwalker)
 		Indeece.createIndex(corpus);
-		
-
 	}
 	
 	public
@@ -90,7 +89,6 @@ public class Searcher {
 	search(String query) throws RecognitionException
 	{
 		Preprocessed terms = new Preprocessed(query);
-		
 		
 		if(rank && rankopt)
 			return vectorSpaceSearchOpt(terms);

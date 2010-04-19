@@ -11,7 +11,7 @@ public class Doc {
 		ID = iD;
 		this.title = title;
 		this.body = body;
-		// set length (TODO)
+		// set this.length (TODO)
 	}
 	
 	public void setID(int ID){
@@ -35,5 +35,9 @@ public class Doc {
 	
 	public int getLength() {
 		return this.length;
+	}
+	
+	public String toString() {
+		return this.title;
 	}
 }

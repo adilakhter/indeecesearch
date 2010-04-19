@@ -14,9 +14,9 @@ public class CorpusBuilder {
 	
 	static Document dom;
 	public int documentID = 0;
-	
+
 	//Builds the corpus from the directory "corpusFolder"
-	public CorpusBuilder(String corpusFolder) {
+	public CorpusBuilder(String corpusFolder) throws IOException {
 		//Get the files in the directory
  	    ArrayList<File> files = getFiles(corpusFolder);
  	    corpus = new HashSet<Doc>();
@@ -24,16 +24,18 @@ public class CorpusBuilder {
  	    //For every file parse it create corresponding Documents
  	    for(int i = 0;i < files.size(); i++)
  	    {
- 	    	System.out.println("Indexing file "+files.get(i).getName());
+ 	    	System.err.println("Indexing file "+files.get(i).getName());
 	     	parseXmlFile(files.get(i));
 	     	corpus.addAll(parseDocuments());
  	    }
 	}
 	
-	//Creates an ArrayList containing the files of the firectory "pathName"
-	private  ArrayList<File> getFiles(String pathName){
+	//Creates an ArrayList containing the files of the directory "pathName"
+	private  ArrayList<File> getFiles(String pathName) throws IOException {
 
 	    	File indexDir = new File(pathName);
+	    	if(!indexDir.isDirectory())
+	    		throw new IOException("Cannot read corpus directory "+pathName);
 		    String[] fileNames = indexDir.list();
 		    ArrayList<File> files = new ArrayList<File>();
 		    char[] extension = new char[3];

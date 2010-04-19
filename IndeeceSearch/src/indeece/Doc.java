@@ -50,6 +50,9 @@ public class Doc implements Comparable<Doc>,Serializable{
 	// Returns the intersection of set1 and set2	
 	public static Set<Doc> and(Set<Doc> set1, Set<Doc> set2) {
 		
+		if((set1 == null) || (set2 == null))
+			return new TreeSet<Doc>();
+		
 		TreeSet<Doc> result = new TreeSet<Doc>();
 		Iterator<Doc> op1 = set1.iterator();
 		Iterator<Doc> op2 = set2.iterator();
@@ -88,6 +91,11 @@ public class Doc implements Comparable<Doc>,Serializable{
 	
 	// Returns the union of this and the other set
 	public static Set<Doc> or(Set<Doc> set1, Set<Doc> set2) {
+		if(set1 == null)
+			set1 = new TreeSet<Doc>();
+		if(set2 == null)
+			set2 = new TreeSet<Doc>();
+		
 		TreeSet<Doc> result = new TreeSet<Doc>(set1);
 		result.addAll(set2);
 		return result;
@@ -95,6 +103,8 @@ public class Doc implements Comparable<Doc>,Serializable{
 	
 	//Returns the complement of the corpus	
 	public static Set<Doc> not(Set<Doc> set1,Set<Doc> corpus) {
+		if(set1 == null)
+			set1 = new TreeSet<Doc>();
 		TreeSet<Doc> result = new TreeSet<Doc>(corpus);
 		result.removeAll(set1);
 		return result;

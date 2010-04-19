@@ -10,7 +10,7 @@ import java.util.LinkedList;
  * */
 
 
-public class PorterStemmer implements IStemmer {
+public class PorterStemmer implements IStemmer, java.io.Serializable {
 
 	private char[] stemmerBuffer;
 	private PorterStemmerIndexes stemmerIndexes = new PorterStemmerIndexes();

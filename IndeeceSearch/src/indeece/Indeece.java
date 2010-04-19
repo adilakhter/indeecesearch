@@ -1,16 +1,21 @@
 package indeece;
 
-import java.io.*;
-import java.util.TreeSet;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Set;
+import java.util.TreeSet;
 
-public class Indeece {
+public class Indeece 
+{
 	private static Index index;
 	private static Set<Doc> corpus;
 	
-	public static void createIndex(Set<Doc> crp) {
-		corpus=crp;
-		index = new Index(corpus);
+	public static void createIndex(CorpusBuilder cBuilder, boolean stemming, boolean permuterm) {
+		corpus = cBuilder.getCorpus();
+		index  = new Index(corpus, stemming, permuterm);
 	}
 	
 	public static Index getActiveIndex() {
@@ -21,7 +26,8 @@ public class Indeece {
 		return corpus;
 	}
 	
-	public static void storeIndeece(Index index,Set<Doc> corpus,String fileName){
+
+	public static void storeIndeece(String fileName){
 		//Serialize Index under the name "fileName.dat"
 		try{
 			FileOutputStream fileout = new FileOutputStream(fileName + ".dat");
@@ -45,7 +51,7 @@ public class Indeece {
 			i.printStackTrace();
 		}
 	}
-	
+
 	public static void loadIndeece(String fileName)
 	{
 		//Deserialize index with fileName
@@ -92,5 +98,4 @@ public class Indeece {
 		Indeece.corpus = corpus;
 		System.out.println("Loaded successfully index and corresponding corpus from " +fileName);
 	}
-
 }

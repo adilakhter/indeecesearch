@@ -1,6 +1,6 @@
 package stemmer;
 
-public class ReplaceALorANTorENCEStemmerCommand extends StemmerCommandBase{
+public class ReplaceALorANTorENCEStemmerCommand extends StemmerCommandBase implements java.io.Serializable {
 
     private static final String[][] SUFFIXES = 
     	  			{{"al", ""}, //0

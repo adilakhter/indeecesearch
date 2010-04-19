@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<LEWIS>
+
+<!-- test document 1 -->
+<REUTERS>
+<TITLE>Document1 term11 term12 common1</TITLE>
+<BODY>
+term13 term14 common2
+</BODY>
+</REUTERS>
+
+<!-- test document 2 -->
+<REUTERS>
+<TITLE>Document2 term21 term22 term23</TITLE>
+<BODY>
+common1 common2
+running runner building builder
+</BODY>
+</REUTERS>
+
+</LEWIS>

@@ -65,20 +65,7 @@ public class Index
 				} else{
 					postingList.add(postingList.new Item(doc,1));
 				}
-				/*
-				Iterator<PostingList.Item> i = postingList.iterator(); 
-				
-				while(i.hasNext()) {
-					currentItem=i.next();
 					
-					if(currentItem.getDoc().getID()==doc.getID()) 
-						currentItem.increaseFrequency();
-					else {
-						postingList.add(postingList.new Item(doc,1));
-						break;
-					}
-						
-				}		*/				
 			}
 		}
 		

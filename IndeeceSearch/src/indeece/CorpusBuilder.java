@@ -9,15 +9,25 @@ import org.xml.sax.SAXException;
 import java.util.Set;
 import java.util.HashSet;
 
-public class Indexer {
-	private static Index activeIndex;
-	private static Set<Doc> corpus;
+public class CorpusBuilder {
+	private Set<Doc> corpus;
 	
 	static Document dom;
-	public static int documentID = 0;
+	public int documentID = 0;
 	
+	public CorpusBuilder(String corpusFolder) {
+ 	    ArrayList<File> files = getFiles(corpusFolder);
+ 	    corpus = new HashSet<Doc>();
+ 	    
+ 	    for(int i = 0;i < files.size(); i++)
+ 	    {
+ 	    	System.out.println("Indexing file "+files.get(i).getName());
+	     	parseXmlFile(files.get(i));
+	     	corpus.addAll(parseDocuments());
+ 	    }
+	}
 	
-	 public static ArrayList<File> getFiles(String pathName){
+	private  ArrayList<File> getFiles(String pathName){
 
 	    	File indexDir = new File(pathName);
 		    String[] fileNames = indexDir.list();
@@ -36,7 +46,7 @@ public class Indexer {
 	    	return files;
 	    }
 		
-	    public static void parseXmlFile(File file){
+	 private void parseXmlFile(File file){
 	    	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	    	
 	    	try{
@@ -51,7 +61,7 @@ public class Indexer {
 			}
 	    }
 	    
-	    public static Set<Doc> parseDocuments(){
+	    private Set<Doc> parseDocuments(){
 	    	Element docEle = dom.getDocumentElement();
 	    	
 	    	String title = "";
@@ -78,7 +88,7 @@ public class Indexer {
 	    	return corpus;
 	    }
 	    
-	    static String getTextValue(Element ele, String tagName) {
+	    private String getTextValue(Element ele, String tagName) {
 			String textVal = null;
 			NodeList nl = ele.getElementsByTagName(tagName);
 			if(nl != null && nl.getLength() > 0) {
@@ -89,30 +99,10 @@ public class Indexer {
 			return textVal;
 		}
 	    
-	    public static Set<Doc> createCorpus(String indexFolder){
-		    
-	 	    ArrayList<File> files = Indexer.getFiles(indexFolder);
-	 	    HashSet<Doc> corpus = new HashSet<Doc>();
-	 	    
-	 	    for(int i = 0;i < files.size(); i++)
-	 	    {
-	 	    	System.out.println("Indexing file "+files.get(i).getName());
-		     	Indexer.parseXmlFile(files.get(i));
-		     	corpus.addAll(Indexer.parseDocuments());
-	 	    }
-	 	    
-	 	    return corpus;
-	    }
-	
-	public static Index getActiveIndex()
-	{
-		return activeIndex;
-	}
-	
-	public static Set<Doc> getCorpus()
-	{
-		return corpus;
-	}
+		public  Set<Doc> getCorpus()
+		{
+			return corpus;
+		}
 	
 	
 }

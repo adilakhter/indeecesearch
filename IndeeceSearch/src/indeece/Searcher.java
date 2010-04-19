@@ -53,12 +53,20 @@ public class Searcher {
 	private boolean rank;
 	private boolean rankopt;
 	
+	//Builds an index given a corpus directory "docsDir"
 	public 
 	Searcher(boolean rank, boolean rankopt, boolean stemming, String docsDir)
 	{
 		this.rank = rank;
 		this.rankopt = rankopt;
-		// construct indexer from directory (TODO)
+		
+		//Create set of documents from corpus,located in directory docsDir
+		CorpusBuilder corpus = new CorpusBuilder(docsDir);
+		
+		// Build index from set of documents (We need a static object for the ASTwalker)
+		Indeece.createIndex(corpus);
+		
+
 	}
 	
 	public
@@ -91,7 +99,7 @@ public class Searcher {
 	public Set<Result>
 	vectorSpaceSearch(Preprocessed query)
 	{
-		Index index = Indexer.getActiveIndex();
+		Index index = Indeece.getActiveIndex();
 		HashSet<Doc> docs = new HashSet<Doc>();
 		TreeSet<Result> results = new TreeSet<Result>();
 		BinaryHeap heap = new BinaryHeap();
@@ -102,7 +110,7 @@ public class Searcher {
 			String t = termit.next();
 			// save tf-idf for t,query
 			tfidf_q.put(t, index.tfidfCalc(t, query));
-			PostingList pl = index.getEntry(termit.next());
+			PostingList pl = index.getPostingList(termit.next());
 			for(Iterator<PostingList.Item> plit = pl.iterator(); plit.hasNext(); ) {
 				docs.add(plit.next().getDoc());
 			}
@@ -136,10 +144,10 @@ public class Searcher {
 	}
 	
 	public Set<Result>
-	booleanSpaceSearch(Preprocessed terms)
+	booleanSpaceSearch(Preprocessed terms) throws RecognitionException
 	{
-		/*
-		CharStream charStream = new ANTLRStringStream(query);
+		
+		CharStream charStream = new ANTLRStringStream(terms.toString());
 	    booleanGrammarLexer lexer = new booleanGrammarLexer(charStream);
 	    TokenStream tokenStream = new CommonTokenStream(lexer);
 		booleanGrammarParser parser = new booleanGrammarParser(tokenStream);
@@ -153,8 +161,8 @@ public class Searcher {
 		//Create an AST traversal tool
 		ASTwalker walker = new ASTwalker(nodeStream);
 		
-		Set<Doc> docs = walker.prog();
-		*/
+		PostingList docs = walker.prog();
+		
 		return null;
 	}
 	

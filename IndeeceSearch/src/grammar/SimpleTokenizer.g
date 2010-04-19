@@ -1,5 +1,5 @@
 lexer grammar SimpleTokenizer;
-
+ 
 options {
   language = Java;
 }

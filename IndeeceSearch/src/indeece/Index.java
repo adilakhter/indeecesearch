@@ -21,8 +21,12 @@ public class Index
 	public Index(Set<Doc> corpus){
 		super();
 		Iterator<Doc> i = corpus.iterator();
+		int current=1;
+		int docNumber=corpus.size();
 		while(i.hasNext())
 		{			
+			System.out.println("Indexing "+ current +" out of " + docNumber);
+			current++;
 			this.addDoc(i.next());		
 		}
 	}
@@ -73,7 +77,11 @@ public class Index
 		
 	}
 	
-	public PostingList getEntry(String term){
+	//Returns the posting-list (if it exists) for term 'term'
+	public PostingList getPostingList(String term){
+		if(this.entries.containsKey(term)) {
+			return this.entries.get(term);
+		}
 		return null;
 	}
 	

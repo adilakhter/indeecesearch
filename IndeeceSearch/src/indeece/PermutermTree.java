@@ -13,6 +13,7 @@ public class PermutermTree extends TreeMap<String,String>{
 	
 	private static final long serialVersionUID = 1L;
 	
+	//Creates the tree containing all the permutations of each term of the 'index'
 	public PermutermTree(Index index){
 		super();
 		Set<String> terms = index.getTerms();
@@ -31,6 +32,7 @@ public class PermutermTree extends TreeMap<String,String>{
 		}
 	}
 	
+	//Returns a set with the original terms of that (permutated) query
 	public Set<String> getTerms(String query){
 		TreeSet<String> retTerms = new TreeSet<String>();
 		SortedMap<String,String> subtree = this.tailMap(query);

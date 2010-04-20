@@ -36,17 +36,12 @@ public class PermutermTree extends TreeMap<String,String>{
 	//Returns a set with the original terms of that (permutated) query
 	public Vector<String> getTerms(String query){
 		Vector<String> retTerms = new Vector<String>();
-		SortedMap<String,String> subtree = this.tailMap(query);
-		Set<Map.Entry<String,String>> entries = subtree.entrySet();
-		Iterator<Map.Entry<String,String>> i = entries.iterator();
+		Map.Entry<String, String> rootEntry = this.ceilingEntry(query);
 		
-		while(i.hasNext())
+		while(rootEntry.getKey().startsWith(query))
 		{
-			Map.Entry<String,String> current = i.next();
-			if( current.getKey().startsWith(query))
-			{
-				retTerms.add(current.getValue());
-			}
+			retTerms.add(rootEntry.getValue());
+			rootEntry = this.higherEntry(rootEntry.getKey());
 		}
 	
 		return retTerms;

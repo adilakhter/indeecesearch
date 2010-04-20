@@ -1,10 +1,19 @@
 package indeece;
 
+import indeece.Model.Result;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Set;
+
+import antlr.ANTLRException;
+import antlr.MismatchedTokenException;
+
+
+
+
 
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -42,28 +51,31 @@ public class MainCmdLine
 			// reload inverted index from pathName
 			Indeece.loadIndeece(pathName);
 		}
-		
-		// create search model.
-		Model model = null;
+
+		Indeece.initModels(Indeece.getActiveIndex(), opts.has("o"));
 		if(opts.has("v"))
-			model = new VectModel(Indeece.getActiveIndex(), opts.has("o"));
+			Indeece.setActive("Vector");
 		else if(opts.has("b"))
-			model = new BoolModel(Indeece.getActiveIndex());
+			Indeece.setActive("Boolean");
+		
 		
 		// start user interaction.
 		BufferedReader 		input 	= new BufferedReader(new InputStreamReader(System.in));
 		Set<Model.Result>	results	= null;
-		
+		String query = new String();
 		while(true)
 		{
 			System.out.print("Enter query: ");
 			
 			// perform search
 			try {
-				results = model.search(input.readLine());
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
+				query=input.readLine();
+				results = Indeece.activeModel().search(query);
+			} catch(Exception e) {	
+				if( Indeece.isActiveModel("Boolean")) {
+					results=switchToVectorModel(query);
+				}
+			} 
 			
 			// print results
 			Iterator<Model.Result> resultsIter = results.iterator();
@@ -74,6 +86,20 @@ public class MainCmdLine
 		}
 	}
 	
+	//When a boolean query is invalid, direct the query towards the Vector Model
+	private static Set<Result> switchToVectorModel(String query) {
+		Set<Result> results = null;
+		System.out.println("Invalid boolean query. Querying vector model instead");
+		Indeece.setActive("Vector");
+		try {
+			results = Indeece.activeModel().search(query);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		Indeece.setActive("Boolean");
+		return results;
+	}
+
 	private static void usage()
 	{
 		System.err.println("[-s] [-r|-w] <-b | -v [-o]> corpusDir");

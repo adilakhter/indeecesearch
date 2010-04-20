@@ -14,6 +14,10 @@ public class Indeece
 	private static Set<Doc> corpus;
 	private static PermutermTree permutermTree;
 	
+	private static Model activeModel;
+	private static Model BooleanModel;
+	private static Model VectModel;
+	
 	public static void createIndex(CorpusBuilder cBuilder, boolean stemming, boolean permuterm) {
 		corpus = cBuilder.getCorpus();
 		index  = new Index(corpus, stemming, permuterm);
@@ -105,5 +109,29 @@ public class Indeece
 		//create the corresponding permutermTree
 		Indeece.permutermTree = new PermutermTree(index);
 		System.out.println("Loaded successfully index and corresponding corpus from " +fileName);
+	}
+
+	public static void setActive(String activateModel) {
+		if(activateModel.compareTo("Boolean")==0)
+			activeModel = BooleanModel; 
+		else
+			activeModel = VectModel;
+		
+		
+	}
+
+	public static void initModels(Index activeIndex, boolean optEnabled) {
+		VectModel    = new VectModel(index,optEnabled);
+		BooleanModel = new BoolModel(index);
+		activeModel  = BooleanModel;
+	}
+
+	public static Model activeModel() {
+		return activeModel;
+	}
+	
+	public static boolean isActiveModel(String model) {
+		String active = activeModel == BooleanModel? "Boolean" : "Vector";
+		return active==model?true:false;
 	}
 }

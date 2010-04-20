@@ -6,6 +6,34 @@ options {
   ASTLabelType=CommonTree;
 }
 
+@members {
+
+		protected Object recoverFromMismatchedToken(IntStream input, 
+		int ttype, BitSet follow) throws RecognitionException 
+		{ 
+		        throw new MismatchedTokenException(ttype, input); 
+		} 
+		
+		protected void mismatch(IntStream input, int ttype, BitSet follow)
+		   throws RecognitionException
+		  {
+		      throw new MismatchedTokenException(ttype, input);
+		  }
+		
+		public Object recoverFromMismatchedSet(IntStream input,RecognitionException e, BitSet follow)
+		throws RecognitionException 
+		{ 
+		        throw e; 
+		} 
+}
+
+@rulecatch { 
+		catch (RecognitionException e) 
+		{ 
+		    throw e; 
+		} 
+} 
+
 @header {
   package grammar;
 }
@@ -14,10 +42,13 @@ options {
   package grammar;
 }
 
+
+
+
 prog  : expr EOF;
 
 expr  :
-    multExpr ((op1='AND'^|'OR'^)? multExpr)*  
+    multExpr ((op1='AND'^|'OR'^) multExpr)*  
   ; 
 
 multExpr

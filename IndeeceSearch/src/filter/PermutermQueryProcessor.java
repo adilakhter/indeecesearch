@@ -33,7 +33,6 @@ public class PermutermQueryProcessor implements IFilter {
 				//handling x* => $x*
 				retString = "$" + terms[0];
 			}	
-			retString  = retString+ "*";
 		}
 		else
 		{

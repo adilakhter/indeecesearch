@@ -12,6 +12,8 @@ options {
   import indeece.Doc;
   
   import java.util.Set;
+  import java.util.Iterator;
+  import java.util.Vector;
   
 }
 
@@ -28,17 +30,26 @@ expr   returns [Set<Doc>  result]
       |^( 'OR' op1=expr op2=expr)   {   //result = op1.or(op2); 
                                         result = Doc.or(op1,op2);
                                     }
-       
       
       |^( 'NOT' op1=expr)           {   //result=op1.not(Indeece.getCorpus()); 
                                         result=Doc.not(op1,Indeece.getCorpus());
                                     }
        
       | TOKEN                       {
-      									String term = Indeece.getActiveIndex().preprocessWord($TOKEN.getText());
-      									if(term == null)
-      										return null;
-                                        result = Indeece.getActiveIndex().getDocumentSet(term);
+      									Vector<String> processedTerm = Indeece.getActiveIndex().preprocessWord($TOKEN.getText());
+      									if(processedTerm.isEmpty())
+      										  return null;
+      									else if(processedTerm.size()==1)
+      									    result = Indeece.getActiveIndex().getDocumentSet(processedTerm.firstElement());
+      									else {
+      									  Iterator<String> termIt = processedTerm.iterator();
+      									  result = Indeece.getActiveIndex().getDocumentSet(termIt.next());
+      										while(termIt.hasNext()) {
+      										   result = Doc.or(result,Indeece.getActiveIndex().getDocumentSet(termIt.next()));
+      										}
+      									
+      									}
+                                        
                                     }
       ; 
  

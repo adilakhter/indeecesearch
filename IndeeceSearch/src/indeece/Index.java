@@ -1,20 +1,26 @@
 package indeece;
 
 import filter.IFilter;
+import filter.PermutermQueryProcessor;
 import filter.StopwordFilter;
 
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.TreeSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Vector;
 
 import stemmer.IStemmer;
 import stemmer.PorterStemmer;
+import termGenerator.ITermGenerator;
 
 public class Index implements java.io.Serializable
 {
-
 	private static final long serialVersionUID = 1L;
+	public static final int MAX_PERMUTATIONS = 30;
+	
+	private static PermutermQueryProcessor queryPr = new PermutermQueryProcessor();
 
 	//A list of entries forms the Index
 	//private ArrayList<Entry> entries;
@@ -47,9 +53,15 @@ public class Index implements java.io.Serializable
 		String content = preprocess(doc.getTitle() + " " + doc.getBody());
 		if(content == null)
 			return;
+		
+		content=content.trim();
 		String terms[] = content.split(" ");
 		for(int i=0; i < terms.length; i++)
-		{	
+		{	if ( terms[i] == "")
+			{
+				System.out.print("term isnull");
+			
+			}
 			if ( !this.entries.containsKey(terms[i]))
 			{
 				PostingList postingList = new PostingList();
@@ -83,35 +95,59 @@ public class Index implements java.io.Serializable
 	public String preprocess(String content)
 	{
 		String	ret = "";
-		String	words[]	= content.split("[\\s,.-]");
-				
+		String	words[]	= content.split("[\\s\t\n\r\f\'\"\\!@#$%^&\\*()_\\+\\-=\\{\\}\\|\\[\\]/`~,>.\\?:;<]");
+
 		for(int i=0; i < words.length; i++) {
-			String term = preprocessWord(words[i]);
-			if(term != null) {
-				if(ret == "")
-					ret = term;
-				else 
-					ret = ret + " " + term;
+			String term = new String();
+			try {
+				term = preprocessWord(words[i]).firstElement();
+				if(ret == "") 
+					ret= term;
+				else
+					ret = ret + " " +term;
+			}
+			catch(NoSuchElementException e) {
+				continue;
 			}
 		}
 		
 		return ret;
 	}
 	
-	public String preprocessWord(String word)
+	public Vector<String> preprocessWord(String word)
 	{
+		
 		String term = word.toLowerCase().trim();
+		
+		Vector<String>  preprocessed=new Vector<String>();
 		if(word.length() <= 1)
-			return null;
+			return preprocessed;
+		
 		// remove stopwords
 		if(stopwordFilter.Filter(term) == "")
-			return null;
+			return preprocessed;
 		
 		// perform stemming
-		if(this.stemming)
+		if(this.stemming) {
+			System.out.print("Term:" +term);
 			term = stemmer.stemTerm(term);
+			System.out.println("\tStemmed term:"+ term);
+		}
+		if(word.contains("*")) {
+			System.out.println("Term with star:"+ term);
+			term=queryPr.Filter(term);
+			System.out.println("New term:"+ term);
+			preprocessed = Indeece.getPermutermTree().getTerms(term);
+			Iterator<String> it = preprocessed.iterator();
+			System.out.println("Derived Terms:");
+			while(it.hasNext())
+				System.out.println(it.next());
+		}
+		else {
+			preprocessed.add(term);
+		}
 		
-		return term;
+		return preprocessed;
 	}
 	
 	//Returns the set of documents (if any) found 

@@ -67,7 +67,7 @@ public class MainCmdLine
 			
 			// print results
 			Iterator<Model.Result> resultsIter = results.iterator();
-			for(int i=0; resultsIter.hasNext(); i++)
+			for(int i=1; resultsIter.hasNext(); i++)
 			{
 				System.out.println(i+"."+resultsIter.next());
 			}

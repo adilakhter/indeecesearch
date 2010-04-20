@@ -17,7 +17,7 @@ options {
 prog  : expr EOF;
 
 expr  :
-    multExpr(('AND'^|'OR'^)multExpr)*
+    multExpr ((op1='AND'^|'OR'^)? multExpr)*  
   ; 
 
 multExpr
@@ -26,8 +26,8 @@ multExpr
 
 atom  : TOKEN
     | '('! expr ')'!
-  ;
+    ;
 
 //Token def must be changed
-TOKEN : ('a'..'z' |'A'..'Z'|'0'..'9')+ ; 
-WS : (' ' |'\t' |'\n' |'\r' | '\f')+      { $channel = HIDDEN;} ;
+TOKEN : (~(' ' |'\t' |'\n' |'\r' | '\f'|'.'|','|';'|':'|'?'))+ ; 
+WS : (' ' |'\t' |'\n' |'\r' | '\f'|'.'|','|';'|':'|'?')+      { $channel = HIDDEN;} ;

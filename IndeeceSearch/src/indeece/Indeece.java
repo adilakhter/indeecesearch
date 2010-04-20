@@ -102,6 +102,7 @@ public class Indeece
 		}
 		Indeece.index = index;
 		Indeece.corpus = corpus;
+		//create the corresponding permutermTree
 		Indeece.permutermTree = new PermutermTree(index);
 		System.out.println("Loaded successfully index and corresponding corpus from " +fileName);
 	}

@@ -4,7 +4,7 @@ import filter.IFilter;
 import filter.StopwordFilter;
 
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -119,7 +119,7 @@ public class Index implements java.io.Serializable
 	public Set<Doc> getDocumentSet(String term){
 		if(this.entries.containsKey(term)) {
 			Iterator<PostingList.Item> listIt = this.entries.get(term).iterator();
-			HashSet<Doc> docList = new HashSet<Doc>();
+			TreeSet<Doc> docList = new TreeSet<Doc>();
 			while(listIt.hasNext()) {
 				docList.add(listIt.next().getDoc());
 			}

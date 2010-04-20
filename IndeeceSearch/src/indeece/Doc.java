@@ -54,17 +54,17 @@ public class Doc implements Comparable<Doc>,Serializable{
 			System.err.println("Doc.and() returning null!");
 			return new TreeSet<Doc>();
 		}
-		set1.retainAll(set2);
-		return set1;
-		/*TreeSet<Doc> result = new TreeSet<Doc>();
+		//set1.retainAll(set2);
+		//return set1;
+		
+		TreeSet<Doc> result = new TreeSet<Doc>();
 		Iterator<Doc> op1 = set1.iterator();
 		Iterator<Doc> op2 = set2.iterator();
 		
 		Doc current1 = getNext(op1);
 		Doc current2 = getNext(op2);
-		
+
 		while(current1!=null && current2!=null) {
-		
 			//If is the same document
 			if(current1.getID() == current2.getID()) {
 				result.add(current1);
@@ -79,7 +79,7 @@ public class Doc implements Comparable<Doc>,Serializable{
 				current2 = getNext(op2);
 		}
 		
-		return result;*/
+		return result;
 	}
 	
 	private static Doc getNext(Iterator<Doc> it) {

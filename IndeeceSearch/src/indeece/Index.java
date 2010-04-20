@@ -137,7 +137,42 @@ public class Index implements java.io.Serializable
 			System.out.println("Term with star:"+ term);
 			term=queryPr.Filter(term);
 			System.out.println("New term:"+ term);
-			preprocessed = Indeece.getPermutermTree().getTerms(term);
+			
+			//Check if a middle term has been returned, which means we have a query  -->  A*B*C
+			if (queryPr.getPostProcessingQueryString() != ""){
+				String middleFix = queryPr.getPostProcessingQueryString();
+				/*Prefix is stored in preAndpostFixes[1] and postfix in preAndpostFixes[0]
+				  because from query  A*B*C we get from filter C$A */
+				String preAndpostFixes[] = term.split("[$]");
+				Vector<String> toBeRemoved = new Vector<String>();
+				preprocessed = Indeece.getPermutermTree().getTerms(term);
+				String current,stripped;
+				Iterator<String> it = preprocessed.iterator();
+				
+				while(it.hasNext())
+				{
+					current = it.next();
+					stripped = "";
+					//strip prefix
+					if (current.startsWith(preAndpostFixes[1])){
+						stripped = current.replace(preAndpostFixes[1], "");
+					}
+					//strip postfix
+					if (current.endsWith(preAndpostFixes[0])){
+						stripped = current.replace(preAndpostFixes[0], "");
+					}
+					//Check if it contains middleFix and if yes, remove current from retTerms
+					if (!stripped.contains(middleFix)){
+						toBeRemoved.add(current);						
+					}
+				}
+				if (toBeRemoved.size() > 0)
+					preprocessed.removeAll(toBeRemoved);
+			}else{
+				//Otherwise we have a normal query that does not require special handling
+				preprocessed = Indeece.getPermutermTree().getTerms(term);
+			}
+			
 			Iterator<String> it = preprocessed.iterator();
 			System.out.println("Derived Terms:");
 			while(it.hasNext())

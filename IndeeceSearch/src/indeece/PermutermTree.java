@@ -40,7 +40,11 @@ public class PermutermTree extends TreeMap<String,String>{
 		
 		while(rootEntry.getKey().startsWith(query))
 		{
-			retTerms.add(rootEntry.getValue());
+			if ( !retTerms.contains(rootEntry.getValue()))
+		    {
+		        //  i.e. we found the wild card terms that we were looking for
+		        retTerms.add(rootEntry.getValue());
+		    }
 			rootEntry = this.higherEntry(rootEntry.getKey());
 		}
 	

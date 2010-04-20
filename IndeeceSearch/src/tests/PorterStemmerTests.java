@@ -322,13 +322,18 @@ public class PorterStemmerTests extends TestCase
 	public void testStemmerIntegration()
 	{
 		String [][] testWords ={
-				{"disable" , "disabl"}
-				,{"DISable    " , "disabl"}
-				,{"KILODISable    " , "disabl"}
-				,{"KIL,,,,....ODISable    " , "disabl"}
-				,{"s" , "s"}
-				,{"as" , "a"}
-				,{"" , ""}
+//				{"disable" , "disabl"}
+//				,{"DISable    " , "disabl"}
+//				,{"KILODISable    " , "disabl"}
+//				,{"KIL,,,,....ODISable    " , "disabl"}
+//				,{"s" , "s"}
+//				,{"as" , "a"}
+//				,{"" , ""}
+//				,{null, null}
+				{"still" , "still"}
+				 ,{"will" , "will"}
+				 ,{"all" , "all"}
+				 ,{"alls" , "all"}
 		};
 		invokeAndAssertExpectationMet(testWords);
 		

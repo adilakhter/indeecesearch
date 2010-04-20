@@ -41,13 +41,17 @@ public abstract class StemmerCommandBase implements IStemmerCommand
 	 * */
 	private boolean isConsonant(int index , char [] currentBuffer ) 
 	{
-		switch (currentBuffer[index]) 
-		{
-			case 'a': case 'e': case 'i': case 'o': case 'u': return false;
-			//The letter y is a consonant when it is the first letter of a syllable that has more than one letter. If y is anywhere else in the syllable, it is a vowel.
-			case 'y': return (index==0) ? true : !isConsonant(index-1, currentBuffer);    
-			default: return true;
+		if (( index >= 0) && (index < currentBuffer.length))
+		{	
+			switch (currentBuffer[index]) 
+			{
+				case 'a': case 'e': case 'i': case 'o': case 'u': return false;
+				//The letter y is a consonant when it is the first letter of a syllable that has more than one letter. If y is anywhere else in the syllable, it is a vowel.
+				case 'y': return (index==0) ? true : !isConsonant(index-1, currentBuffer);    
+				default: return true;
+			}
 		}
+		return false;
 	}
 	
 	/*

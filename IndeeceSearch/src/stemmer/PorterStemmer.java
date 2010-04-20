@@ -58,18 +58,25 @@ public class PorterStemmer implements IStemmer, java.io.Serializable {
 	 * */
 	public String stemTerm(String word) {
 		String stemmedWordToReturn = word;
+		if( word  == null) return word ; // if the word is null , return immediately
+		try
+		{
+			stemmedWordToReturn = cleanTerm(stemmedWordToReturn); // cleaning up the term as necessary
+			setupBuffer(stemmedWordToReturn); // setting up the buffer 
+			
+			stemTerm(); // runs all the stemming command
+			
+			stemmedWordToReturn = new String(stemmerBuffer , 0 , stemmerIndexes.finalLength);
+			stemmerIndexes.initStemmerIndexes(); // resetting the indexes to the initial stage 
+			
+		}catch ( Exception ex)
+		{
+			System.err.println("Failed to stem a word :" + stemmedWordToReturn + " Skipping it. Error: " + ex.getMessage() );
+			ex.printStackTrace();
+		}
 		
-		stemmedWordToReturn = cleanTerm(stemmedWordToReturn);
-		
-		setupBuffer(stemmedWordToReturn); // setting up the buffer 
-		
-		
-		stemTerm();		
-		
-		stemmedWordToReturn = new String(stemmerBuffer , 0 , stemmerIndexes.finalLength);
-		
-		stemmerIndexes.initStemmerIndexes(); // resetting the indexes to the initial stage 
 		return stemmedWordToReturn;
+		
 	}
 	
 	

@@ -63,4 +63,10 @@ public class StopwordFilter implements IFilter {
 		return term;
 	}
 
+	@Override
+	public String getPostProcessingQueryString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -22,7 +22,7 @@ public class PermutermQueryProcessorTests extends TestCase {
 			
 			IFilter filter = new PermutermQueryProcessor();
 			String testQueryTerm = "cor*ll";
-			String expected  = "ll$cor*";
+			String expected  = "ll$cor";
 			String actual = filter.Filter(testQueryTerm);
 			
 			assertEquals ( expected , actual);
@@ -32,7 +32,7 @@ public class PermutermQueryProcessorTests extends TestCase {
 		{	
 			IFilter filter = new PermutermQueryProcessor();
 			String testQueryTerm = "gib*lt*r";
-			String expected  = "r$gib*";
+			String expected  = "r$gib";
 			String actual = filter.Filter(testQueryTerm);
 			
 			assertEquals ( expected , actual);
@@ -42,7 +42,7 @@ public class PermutermQueryProcessorTests extends TestCase {
 		{	
 			IFilter filter = new PermutermQueryProcessor();
 			String testQueryTerm = "*test";
-			String expected  = "test$*";
+			String expected  = "test$";
 			String actual = filter.Filter(testQueryTerm);
 			
 			assertEquals ( expected , actual);
@@ -52,9 +52,34 @@ public class PermutermQueryProcessorTests extends TestCase {
 		{	
 			IFilter filter = new PermutermQueryProcessor();
 			String testQueryTerm = "test*";
-			String expected  = "$test*";
+			String expected  = "$test";
 			String actual = filter.Filter(testQueryTerm);
 			
 			assertEquals ( expected , actual);
+		}
+		
+		public void testPermutermQueryProcessTest6()
+		{	
+			IFilter filter = new PermutermQueryProcessor();
+			String testQueryTerm = "*x*";
+			String expected  = "x";
+			String actual = filter.Filter(testQueryTerm);
+			
+			assertEquals ( expected , actual);
+		}
+		
+		public void testGetPostProcessingQueryString()
+		{
+			IFilter filter = new PermutermQueryProcessor();
+			String testQueryTerm = "gib*lt*r";
+			String expected  = "r$gib";
+			
+			String filteredString = filter.Filter(testQueryTerm);
+			System.out.println(filteredString);
+			
+			assertEquals(expected, filteredString);
+			
+			String preprocessingString = filter.getPostProcessingQueryString();
+			assertEquals("lt", preprocessingString);
 		}
 }

@@ -44,8 +44,10 @@ public class Index implements java.io.Serializable
 	public void addDoc(Doc doc)
 	{
 		// index document's title & body.
-		String content = doc.getTitle() + " " + doc.getBody();
-		String terms[] = preprocess(content).split(" ");
+		String content = preprocess(doc.getTitle() + " " + doc.getBody());
+		if(content == null)
+			return;
+		String terms[] = content.split(" ");
 		for(int i=0; i < terms.length; i++)
 		{	
 			if ( !this.entries.containsKey(terms[i]))
@@ -82,7 +84,7 @@ public class Index implements java.io.Serializable
 	{
 		String	ret = "";
 		String	words[]	= content.split("[\\s,.-]");
-		
+				
 		for(int i=0; i < words.length; i++) {
 			String term = preprocessWord(words[i]);
 			if(term != null) {
@@ -98,8 +100,9 @@ public class Index implements java.io.Serializable
 	
 	public String preprocessWord(String word)
 	{
-		String term = word.toLowerCase();
-		
+		String term = word.toLowerCase().trim();
+		if(word.length() <= 1)
+			return null;
 		// remove stopwords
 		if(stopwordFilter.Filter(term) == "")
 			return null;

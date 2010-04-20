@@ -115,6 +115,7 @@ public class PorterStemmer implements IStemmer, java.io.Serializable {
 	private void stemTerm()
 	{
 		stemmerIndexes.currentIndex = stemmerIndexes.stemmerBufferLength - 1; // setting the index to the last index of the word
+		stemmerIndexes.j = stemmerIndexes.currentIndex;
 		
 		if( stemmerIndexes.currentIndex  > 0)
 		{

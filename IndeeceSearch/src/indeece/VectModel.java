@@ -25,26 +25,22 @@ public class VectModel extends Model {
 	{
 		//HashMap holding the terms and their frequencies in the queries
 		HashMap<String,Integer> queryTerms = preprocess(rawQuery);
+		// prune terms with low idf if necessary.
+		if(highIdfOpt)
+			queryTerms = pruneLowIdfTerms(queryTerms);
 		//Binary Heap to hold results
 		BinaryHeap  resultsHeap = new BinaryHeap();
 		
 		if(queryTerms == null)
 			return new BinaryHeap();
 		
-		// prune terms with low idf if necessary.
-		if(highIdfOpt)
-			resultsHeap = pruneLowIdfTerms(queryTerms);
+		
 		
 		resultsHeap = calculateRank(queryTerms);
 		
 		return resultsHeap;
 	}
 	
-	private BinaryHeap pruneLowIdfTerms(HashMap<String, Integer> queryTerms) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	private HashMap<String,Integer> preprocess(String rawQuery) {
 		HashMap<String,Integer> termFrequencyMap = new HashMap<String,Integer>();
 		String query = index.preprocess(rawQuery);
@@ -142,5 +138,26 @@ public class VectModel extends Model {
 		
 		return termWeight; 
 	}
-
+	//Returns only the high idf terms based on the idfThreshold 
+    private static HashMap<String,Integer> pruneLowIdfTerms(HashMap<String,Integer> queryTerms)
+    {
+	     //The threshold on which low-idf terms in the query are pruned
+	     double idfThreshold = 0.0;
+	     
+	     //Clone is needed to avoid concurrent modification error
+	     HashMap<String,Integer> retTerms = (HashMap<String,Integer>) queryTerms.clone();
+	     String current = "";
+	     Set<String> terms =  queryTerms.keySet();
+	     Iterator<String> i = terms.iterator();
+	     while(i.hasNext())
+	     {
+	         current = i.next();
+	
+	         if (Indeece.getActiveIndex().getPostingList(current).getTermIdf() < idfThreshold)
+	         {
+	              retTerms.remove(current);
+	         }
+	     }
+	     return retTerms;
+    }
 }

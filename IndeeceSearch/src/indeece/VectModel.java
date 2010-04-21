@@ -1,18 +1,15 @@
 package indeece;
 
-import indeece.Model.Result;
-
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.Set;
 
 import util.BinaryHeap;
 
 public class VectModel extends Model {
 
 	private boolean	highIdfOpt	= false;
+	private ICosineRankCalculationStrategy consineCalculationStrategy = null;
 	
 	public VectModel(Index index, boolean highIdfOpt)
 	{
@@ -33,15 +30,14 @@ public class VectModel extends Model {
 		
 		if(queryTerms == null)
 			return new BinaryHeap();
-		
-		
-		
+	
 		resultsHeap = calculateRank(queryTerms);
 		
 		return resultsHeap;
 	}
 	
 	private HashMap<String,Integer> preprocess(String rawQuery) {
+		
 		HashMap<String,Integer> termFrequencyMap = new HashMap<String,Integer>();
 		String query = index.preprocess(rawQuery);
 		
@@ -59,47 +55,53 @@ public class VectModel extends Model {
 	
 	private BinaryHeap calculateRank(HashMap<String,Integer> queryTerms)
 	{
-		HashMap<Doc,Float> scoresMap = new HashMap<Doc,Float>();
-		BinaryHeap resultHeap = new BinaryHeap();
-		float termWeight = 0,
-			  queryWeightNorm = 0,
-			  docWeightNorm = 0;
-		String currentTerm;
-		
-		Iterator<String> termIter = queryTerms.keySet().iterator();
-		
-		//Iterate over all terms in the query
-		while(termIter.hasNext()) {
-			currentTerm = termIter.next();
-			
-			//Calculate the dot product of the query and the documents, and return the term's weight
-			termWeight = updateDotProduct(scoresMap,currentTerm,queryTerms.get(currentTerm));
+		if ( consineCalculationStrategy == null)
+		{
+			HashMap<Doc,Float> scoresMap = new HashMap<Doc,Float>();
+			BinaryHeap resultHeap = new BinaryHeap();
+			float termWeight = 0,
+			queryWeightNorm = 0,
+			docWeightNorm = 0;
+			String currentTerm;
 
-			//Update the query weight norm
-			queryWeightNorm += (float) Math.pow(termWeight,2.0);
+			Iterator<String> termIter = queryTerms.keySet().iterator();
+
+			//Iterate over all terms in the query
+			while(termIter.hasNext()) {
+				currentTerm = termIter.next();
+
+				//Calculate the dot product of the query and the documents, and return the term's weight
+				termWeight = updateDotProduct(scoresMap,currentTerm,queryTerms.get(currentTerm));
+
+				//Update the query weight norm
+				queryWeightNorm += (float) Math.pow(termWeight,2.0);
+			}
+
+			//This will be the final query Weight norm
+			queryWeightNorm = (float) Math.sqrt(queryWeightNorm);
+
+
+			Iterator<Doc> relevantDocIter = scoresMap.keySet().iterator();
+			Doc currentDoc;
+			float score = 0;
+
+			while(relevantDocIter.hasNext()) {
+				currentDoc = relevantDocIter.next();
+				docWeightNorm = currentDoc.getVectorNorm();
+				if(docWeightNorm==0)
+					System.out.println("ZERO WEIGHT NORM");
+				if(termWeight!=0)
+					score = scoresMap.get(currentDoc) / (queryWeightNorm*docWeightNorm);
+
+				//Insert result into heap
+				resultHeap.insert(new Model.Result(currentDoc,score));
+
+			}		
+			return resultHeap;
+		}else
+		{
+			return null;
 		}
-		
-		//This will be the final query Weight norm
-		queryWeightNorm = (float) Math.sqrt(queryWeightNorm);
-
-		
-		Iterator<Doc> relevantDocIter = scoresMap.keySet().iterator();
-		Doc currentDoc;
-		float score = 0;
-		
-		while(relevantDocIter.hasNext()) {
-			 currentDoc = relevantDocIter.next();
-			 docWeightNorm = currentDoc.getVectorNorm();
-			 if(docWeightNorm==0)
-				 System.out.println("ZERO WEIGHT NORM");
-			 if(termWeight!=0)
-				 score = scoresMap.get(currentDoc) / (queryWeightNorm*docWeightNorm);
-		 
-			 //Insert result into heap
-			 resultHeap.insert(new Model.Result(currentDoc,score));
-			
-		}		
-		return resultHeap;
 	}
 	
 	private float updateDotProduct(HashMap<Doc, Float> scoresMap,

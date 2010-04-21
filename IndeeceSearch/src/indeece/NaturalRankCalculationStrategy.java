@@ -1,13 +1,13 @@
 package indeece;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
 import util.BinaryHeap;
 
-//Sub-linear TF , IDF , Cosine Ranking Strategy
-
-public class SubLinearRankCalculationStrategy  extends AbstractRankCalculationStrategy {
+// Natural TF , IDF and Cosine Ranking Strategy
+public class NaturalRankCalculationStrategy extends AbstractRankCalculationStrategy {
 
 	@Override
 	public BinaryHeap caculateCosineScore(
@@ -17,7 +17,7 @@ public class SubLinearRankCalculationStrategy  extends AbstractRankCalculationSt
 		return null;
 	}
 
-	//CALCULATED SUBLINEAR TFxIDF. Equation 6.13 in Chapter 6 
+	//calculates normal TFxIDF
 	@Override
 	public void calculateVectorNorms(Index indexObject) {
 		HashMap<String , PostingList > entries = indexObject.getIndexedTerms();
@@ -38,7 +38,7 @@ public class SubLinearRankCalculationStrategy  extends AbstractRankCalculationSt
 			plIter = postingList.iterator();
 			while(plIter.hasNext()) {
 				currentItem = plIter.next();
-				tf =  (float) (1 + Math.log10((double)currentItem.getFrequency()));
+				tf =  currentItem.getFrequency();
 				weight = tf*idf;
 				currentItem.getDoc().addToNorm(weight);
 			}
@@ -51,6 +51,5 @@ public class SubLinearRankCalculationStrategy  extends AbstractRankCalculationSt
 		}
 		
 	}
-
 
 }

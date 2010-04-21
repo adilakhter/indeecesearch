@@ -13,10 +13,15 @@ public class Indeece
 	private static Index index;
 	private static Set<Doc> corpus;
 	private static PermutermTree permutermTree;
-	
+	private static ICosineRankCalculationStrategy consineCalculationStrategy = null;
 	private static Model activeModel;
 	private static Model BooleanModel;
 	private static Model VectModel;
+	
+	public static ICosineRankCalculationStrategy  getCosineStrategy()
+	{
+		return consineCalculationStrategy;
+	}
 	
 	public static void createIndex(CorpusBuilder cBuilder, boolean stemming, boolean permuterm) {
 		corpus = cBuilder.getCorpus();

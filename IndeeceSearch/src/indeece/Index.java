@@ -48,7 +48,10 @@ public class Index implements java.io.Serializable
 			current++;
 			this.addDoc(i.next());		
 		}
-		calculateVectorNorms();
+		if ( Indeece.getCosineStrategy() == null)
+			calculateVectorNorms();
+		else
+			Indeece.getCosineStrategy().calculateVectorNorms(this); 
 	}
 	
 	private void calculateVectorNorms() {

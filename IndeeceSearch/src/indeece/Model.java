@@ -6,7 +6,7 @@ import java.util.Set;
 // abstraction for a search model (i.e. Probabilistic, Vector Space, Boolean)
 public abstract class Model
 {
-	Index index = null;
+	public Index index = null;
 	
 	// constructor.
 	public Model(Index index)
@@ -16,6 +16,11 @@ public abstract class Model
 	
 	// abstract search method.
 	public abstract Collection<Result> search(String query) throws Exception;
+	
+	public Model.Result CreateResult( Doc doc , float score)
+	{
+		return new Model.Result( doc , score);
+	}
 	
 	// inner class: abstraction for a search result.
 	public class Result implements Comparable<Result>

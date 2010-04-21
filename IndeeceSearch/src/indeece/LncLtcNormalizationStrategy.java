@@ -9,51 +9,20 @@ import util.BinaryHeap;
 public class LncLtcNormalizationStrategy extends AbstractRankCalculationStrategy{
 
 	@Override
-	public BinaryHeap caculateCosineScore(
-			HashMap<String, Integer> queryTermFrequencyMapping,
-			Index indexObject) {
-		// TODO Auto-generated method stub
-		return null;
+	protected float getDocumentTermWeight(float termFrequency, float termIdf) {
+		termFrequency = (float) (1 + Math.log10((double)termFrequency));//Logarithmic term frequency
+		termIdf = 1; // no term idf
+		
+		return termFrequency * termIdf;
 	}
-
 
 	@Override
-	public void calculateVectorNorms(Index indexObject) {
-		HashMap<String , PostingList > entries = indexObject.getIndexedTerms();
-		HashSet<PostingList> indexSet =  new HashSet<PostingList>(entries.values());
+	protected float getQueryTermWeight(float termFrequency, float termIdf) {
+		termFrequency = (float) (1 + Math.log10((double)termFrequency));//Logarithmic term frequency
+		termIdf = termIdf; // term idf
 		
-		Iterator<PostingList> indexIt = indexSet.iterator();
-		Iterator<PostingList.Item> plIter;
-		
-		PostingList postingList;
-		PostingList.Item currentItem;
-		float tf,idf,weight;
-		
-		while(indexIt.hasNext()) {
-			postingList = indexIt.next();
-
-			//Calculate term idf
-			idf = 1; // Idf is 1 for lnc . For effecitiveness and efficiency reason 
-			postingList.setTermIdf(idf);
-			
-			plIter = postingList.iterator();
-			while(plIter.hasNext()) {
-				currentItem = plIter.next();
-				
-				tf =  currentItem.getFrequency();
-				weight = tf*idf;
-				currentItem.getDoc().addToNorm(weight);
-			}
-		}
-		
-		//Finalize vector norm by setting it to its square root
-		Iterator<Doc> docIt = Indeece.getCorpus().iterator();
-		while(docIt.hasNext()) {
-			docIt.next().finalizeVectorNorm();
-		}
-		
+		return termFrequency * termIdf;
 	}
-
-
+	
 
 }

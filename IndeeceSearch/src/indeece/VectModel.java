@@ -3,13 +3,11 @@ package indeece;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
-
 import util.BinaryHeap;
 
 public class VectModel extends Model {
 
 	private boolean	highIdfOpt	= false;
-	private ICosineRankCalculationStrategy consineCalculationStrategy = null;
 	
 	public VectModel(Index index, boolean highIdfOpt)
 	{
@@ -53,10 +51,9 @@ public class VectModel extends Model {
 		return termFrequencyMap;
 	}
 
-	
 	private BinaryHeap calculateRank(HashMap<String,Integer> queryTerms)
 	{
-		if ( consineCalculationStrategy == null)
+		if ( Indeece.getCosineStrategy() == null)
 		{
 			HashMap<Doc,Float> scoresMap = new HashMap<Doc,Float>();
 			BinaryHeap resultHeap = new BinaryHeap();
@@ -101,7 +98,7 @@ public class VectModel extends Model {
 			return resultHeap;
 		}else
 		{
-			return null;
+			return Indeece.getCosineStrategy().caculateCosineScore(this, queryTerms);
 		}
 	}
 	
@@ -141,6 +138,7 @@ public class VectModel extends Model {
 		
 		return termWeight; 
 	}
+	
 	//Returns only the high idf terms based on the idfThreshold 
     private  HashMap<String,Integer> pruneLowIdfTerms(HashMap<String,Integer> queryTerms)
     {

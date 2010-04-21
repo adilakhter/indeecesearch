@@ -46,7 +46,7 @@ public abstract class Model
 		
 		public String toString()
 		{
-			return this.doc.getTitle()+" (score: "+this.score+")";
+			return this.doc.getTitle()+ ((Indeece.isActiveModel("Vector"))?" (score: "+this.score+")":"");
 		}
 	}
 }

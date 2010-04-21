@@ -5,6 +5,7 @@ import filter.PermutermQueryProcessor;
 import filter.StopwordFilter;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
 import java.util.Iterator;
@@ -18,8 +19,8 @@ import termGenerator.ITermGenerator;
 public class Index implements java.io.Serializable
 {
 	private static final long serialVersionUID = 1L;
-	public static final int MAX_PERMUTATIONS = 30;
 	
+	//Query transformation for wildcard searching
 	private static PermutermQueryProcessor queryPr = new PermutermQueryProcessor();
 
 	//A list of entries forms the Index
@@ -31,22 +32,58 @@ public class Index implements java.io.Serializable
 	private static IFilter stopwordFilter = new StopwordFilter();
 	private boolean stemming;
 	
+	private int indexedDocsNumber;
+	
 	//Create the index of the given corpus
 	public Index(Set<Doc> corpus, boolean stemming, boolean permuterm)
 	{
 		this.stemming = stemming;
+		indexedDocsNumber = corpus.size();
 		Iterator<Doc> i = corpus.iterator();
 		int current=1;
-		int docNumber=corpus.size();
 		while(i.hasNext())
 		{			
 			if(current%50==0)
-			System.out.println("Indexing "+ current +" out of " + docNumber);
+			System.out.println("Indexing "+ current +" out of " + indexedDocsNumber);
 			current++;
 			this.addDoc(i.next());		
 		}
+		calculateVectorNorms();
 	}
 	
+	private void calculateVectorNorms() {
+		System.out.print("Calculating vector norms...");
+		HashSet<PostingList> indexSet =  new HashSet<PostingList>(entries.values());
+		Iterator<PostingList> indexIt = indexSet.iterator();
+		Iterator<PostingList.Item> plIter;
+		PostingList postingList;
+		PostingList.Item currentItem;
+		float tf,idf,weight;
+		
+		while(indexIt.hasNext()) {
+			postingList = indexIt.next();
+
+			//Calculate term idf
+			idf = (float) Math.log10(indexedDocsNumber/postingList.size());
+			postingList.setTermIdf(idf);
+			
+			plIter = postingList.iterator();
+			while(plIter.hasNext()) {
+				currentItem = plIter.next();
+				tf =  (float) (1 + Math.log10((double)currentItem.getFrequency()));
+				weight = tf*idf;
+				currentItem.getDoc().addToNorm(weight);
+			}
+		}
+		
+		//Finalize vector norm by setting it to its square root
+		Iterator<Doc> docIt = Indeece.getCorpus().iterator();
+		while(docIt.hasNext()) {
+			docIt.next().finalizeVectorNorm();
+		}
+		System.out.println("DONE");
+	}
+
 	public void addDoc(Doc doc)
 	{
 		// index document's title & body.
@@ -57,11 +94,7 @@ public class Index implements java.io.Serializable
 		content=content.trim();
 		String terms[] = content.split(" ");
 		for(int i=0; i < terms.length; i++)
-		{	if ( terms[i] == "")
-			{
-				System.out.print("term isnull");
-			
-			}
+		{	
 			if ( !this.entries.containsKey(terms[i]))
 			{
 				PostingList postingList = new PostingList();
@@ -201,5 +234,13 @@ public class Index implements java.io.Serializable
 	
 	public Set<String> getTerms(){	
 		return this.entries.keySet();
+	}
+	
+	public int getIndexedDocsNumber() {
+		return indexedDocsNumber;
+	}
+	
+	public int getDocFrequency(String term) {
+		return getPostingList(term).size();
 	}
 }

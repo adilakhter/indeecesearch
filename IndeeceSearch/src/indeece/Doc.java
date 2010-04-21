@@ -11,12 +11,14 @@ public class Doc implements Comparable<Doc>,Serializable{
 	private String title;
 	private String body;
 	private int length;
+	private float vectorNorm;
 	
 	public Doc(int iD, String title, String body) {
 		super();
 		ID = iD;
 		this.title = title;
 		this.body = body;
+		this.vectorNorm = 0;
 		// set this.length (TODO)
 	}
 	
@@ -41,6 +43,15 @@ public class Doc implements Comparable<Doc>,Serializable{
 	
 	public int getLength() {
 		return this.length;
+	}
+	
+	public void addToNorm(float weight) {
+		this.vectorNorm+=(float)Math.pow((double)weight, 2.0);
+	}
+	
+	public void finalizeVectorNorm() {
+		
+		this.vectorNorm= (float) Math.sqrt((double)vectorNorm);
 	}
 	
 	public String toString() {
@@ -118,5 +129,9 @@ public class Doc implements Comparable<Doc>,Serializable{
 	public int compareTo(Doc arg0) {
 		// TODO Auto-generated method stub
 		return this.getID()-arg0.getID();
+	}
+
+	public float getVectorNorm() {
+		return vectorNorm;
 	}
 }

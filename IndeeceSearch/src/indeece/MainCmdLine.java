@@ -52,7 +52,7 @@ public class MainCmdLine
 			Indeece.loadIndeece(pathName);
 		}
 
-		Indeece.initModels(Indeece.getActiveIndex(), opts.has("o"));
+		Indeece.initModels(opts.has("o"));
 		if(opts.has("v"))
 			Indeece.setActive("Vector");
 		else if(opts.has("b"))

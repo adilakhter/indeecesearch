@@ -116,11 +116,9 @@ public class Indeece
 			activeModel = BooleanModel; 
 		else
 			activeModel = VectModel;
-		
-		
 	}
 
-	public static void initModels(Index activeIndex, boolean optEnabled) {
+	public static void initModels(boolean optEnabled) {
 		VectModel    = new VectModel(index,optEnabled);
 		BooleanModel = new BoolModel(index);
 		activeModel  = BooleanModel;

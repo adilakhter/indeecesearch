@@ -10,6 +10,7 @@ public class PostingList extends TreeSet<PostingList.Item> implements Serializab
 
 	private static final long serialVersionUID = 1L;
 	
+	private float termIdf;
 	public PostingList(){
 		super();
 	}
@@ -18,6 +19,17 @@ public class PostingList extends TreeSet<PostingList.Item> implements Serializab
 	public PostingList(Set copy){
 		super(copy);
 	}
+	
+	public void setTermIdf(float idf) {
+		termIdf = idf;
+		
+	}
+	
+	public float getTermIdf()
+	{
+		return termIdf;
+	}
+	
 	
 	//Posting list item contains a doc and the specific frequency of the term for that doc
 	public class Item implements Comparable<Item>,Serializable
@@ -51,6 +63,8 @@ public class PostingList extends TreeSet<PostingList.Item> implements Serializab
 			// TODO Auto-generated method stub
 			return this.doc.getID()-arg0.doc.getID();
 		}
+
+
 		
 	}
 	

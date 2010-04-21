@@ -12,9 +12,6 @@ public class HeapIterator<T> implements Iterator<Result> {
 	}
 
 	public boolean hasNext() {
-		if(bHeap.isEmpty())
-			System.out.println("Empty");
-		System.out.println("Size of heap: "+ bHeap.getSize());
 		return !bHeap.isEmpty();
 	}
 

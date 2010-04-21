@@ -78,23 +78,26 @@ public class VectModel extends Model {
 			
 			//Calculate the dot product of the query and the documents, and return the term's weight
 			termWeight = updateDotProduct(scoresMap,currentTerm,queryTerms.get(currentTerm));
-			
+
 			//Update the query weight norm
 			queryWeightNorm += (float) Math.pow(termWeight,2.0);
 		}
 		
 		//This will be the final query Weight norm
 		queryWeightNorm = (float) Math.sqrt(queryWeightNorm);
-		
+
 		
 		Iterator<Doc> relevantDocIter = scoresMap.keySet().iterator();
 		Doc currentDoc;
-		float score;
+		float score = 0;
 		
 		while(relevantDocIter.hasNext()) {
 			 currentDoc = relevantDocIter.next();
 			 docWeightNorm = currentDoc.getVectorNorm();
-			 score = scoresMap.get(currentDoc)/ (queryWeightNorm*docWeightNorm);
+			 if(docWeightNorm==0)
+				 System.out.println("ZERO WEIGHT NORM");
+			 if(termWeight!=0)
+				 score = scoresMap.get(currentDoc)/ (queryWeightNorm*docWeightNorm);
 			 
 			 //Insert result into heap
 			 resultHeap.insert(new Model.Result(currentDoc,score));
@@ -113,8 +116,9 @@ public class VectModel extends Model {
 		//Get the term Idf from the posting list
 		float termIdf = currentTermList.getTermIdf();
 		
+		
 		//Calculate the term component of the query 
-		float termWeight = (1 +  (float) Math.log10(termFrequency)) * termIdf ;
+		float termWeight = (1 +  (float) Math.log10((double)termFrequency)) * termIdf ;
 		
 		Iterator<PostingList.Item> docIter = currentTermList.iterator();
 		Doc currentDoc;
@@ -126,7 +130,7 @@ public class VectModel extends Model {
 		while(docIter.hasNext()) {
 			item = docIter.next();
 			currentDoc = item.getDoc();
-			documentWeight = (float) (1 + Math.log10(item.getFrequency())) * termIdf;
+			documentWeight = (float) (1 + Math.log10((double)item.getFrequency())) * termIdf;
 			if(scoresMap.containsKey(currentDoc))	
 				currentScore = scoresMap.get(currentDoc);
 			

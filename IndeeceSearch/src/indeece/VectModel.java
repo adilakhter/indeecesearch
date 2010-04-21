@@ -23,6 +23,7 @@ public class VectModel extends Model {
 		//HashMap holding the terms and their frequencies in the queries
 		HashMap<String,Integer> queryTerms = preprocess(rawQuery);
 		// prune terms with low idf if necessary.
+		//Currently,low-idf terms are pruned completely but maybe we should just not accumulate scores for those terms but still get their posting lists. ???  (TODO)
 		if(highIdfOpt)
 			queryTerms = pruneLowIdfTerms(queryTerms);
 		//Binary Heap to hold results
@@ -141,10 +142,10 @@ public class VectModel extends Model {
 		return termWeight; 
 	}
 	//Returns only the high idf terms based on the idfThreshold 
-    private static HashMap<String,Integer> pruneLowIdfTerms(HashMap<String,Integer> queryTerms)
+    private  HashMap<String,Integer> pruneLowIdfTerms(HashMap<String,Integer> queryTerms)
     {
 	     //The threshold on which low-idf terms in the query are pruned
-	     double idfThreshold = 0.0;
+	     double idfThreshold = 2;
 	     
 	     //Clone is needed to avoid concurrent modification error
 	     HashMap<String,Integer> retTerms = (HashMap<String,Integer>) queryTerms.clone();

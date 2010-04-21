@@ -97,8 +97,8 @@ public class VectModel extends Model {
 			 if(docWeightNorm==0)
 				 System.out.println("ZERO WEIGHT NORM");
 			 if(termWeight!=0)
-				 score = scoresMap.get(currentDoc)/ (queryWeightNorm*docWeightNorm);
-			 
+				 score = scoresMap.get(currentDoc) / (queryWeightNorm*docWeightNorm);
+		 
 			 //Insert result into heap
 			 resultHeap.insert(new Model.Result(currentDoc,score));
 			

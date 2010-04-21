@@ -66,9 +66,7 @@ public class Index implements java.io.Serializable
 			//Calculate term idf
 			int plSize = postingList.size();
 			idf = (float) Math.log10((double)indexedDocsNumber/postingList.size());
-			if(idf ==0 ) {
-				System.out.println("Zero idf with docs="+indexedDocsNumber + " and pl size="+ plSize + " idf "+(double)Math.log10((double)indexedDocsNumber/postingList.size()));
-			}
+
 			postingList.setTermIdf(idf);
 			
 			plIter = postingList.iterator();

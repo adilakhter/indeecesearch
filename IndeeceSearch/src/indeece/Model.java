@@ -43,7 +43,8 @@ public abstract class Model
 		@Override
 		public int compareTo(Result other) 
 		{
-			return (int)(this.score - other.score);
+			//System.out.println("Here"+ this.score +"  "+ (double)-((this.score - other.score)));
+			return (int)-(100*(this.score - other.score));
 		}
 		
 		public String toString()

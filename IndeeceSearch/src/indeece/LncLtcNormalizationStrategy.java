@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import util.BinaryHeap;
 
-public class MaximumTFNormalizationStrategy extends AbstractRankCalculationStrategy{
+public class LncLtcNormalizationStrategy extends AbstractRankCalculationStrategy{
 
 	@Override
 	public BinaryHeap caculateCosineScore(

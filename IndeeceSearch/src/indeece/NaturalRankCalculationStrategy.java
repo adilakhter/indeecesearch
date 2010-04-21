@@ -38,6 +38,7 @@ public class NaturalRankCalculationStrategy extends AbstractRankCalculationStrat
 			plIter = postingList.iterator();
 			while(plIter.hasNext()) {
 				currentItem = plIter.next();
+				// Natural Term Frequency
 				tf =  currentItem.getFrequency();
 				weight = tf*idf;
 				currentItem.getDoc().addToNorm(weight);

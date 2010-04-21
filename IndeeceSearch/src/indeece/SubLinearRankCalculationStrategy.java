@@ -38,6 +38,7 @@ public class SubLinearRankCalculationStrategy  extends AbstractRankCalculationSt
 			plIter = postingList.iterator();
 			while(plIter.hasNext()) {
 				currentItem = plIter.next();
+				// caculating sublinear terms frequncy
 				tf =  (float) (1 + Math.log10((double)currentItem.getFrequency()));
 				weight = tf*idf;
 				currentItem.getDoc().addToNorm(weight);

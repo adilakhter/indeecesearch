@@ -243,4 +243,10 @@ public class Index implements java.io.Serializable
 	public int getDocFrequency(String term) {
 		return getPostingList(term).size();
 	}
+
+	public HashMap<String,PostingList> getIndexedTerms()
+	{
+		return entries;
+		
+	}
 }

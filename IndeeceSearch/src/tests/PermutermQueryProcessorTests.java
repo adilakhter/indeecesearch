@@ -68,6 +68,8 @@ public class PermutermQueryProcessorTests extends TestCase {
 			assertEquals ( expected , actual);
 		}
 		
+		
+		
 		public void testGetPostProcessingQueryString()
 		{
 			IFilter filter = new PermutermQueryProcessor();

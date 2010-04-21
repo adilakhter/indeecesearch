@@ -1,5 +1,7 @@
 package util;
 
+import indeece.Model.Result;
+
 //PriorityQueue interface
 //
 // ******************PUBLIC OPERATIONS*********************
@@ -21,7 +23,7 @@ package util;
  * Note that all "matching" is based on the compareTo method.
  * @author Mark Allen Weiss
  */
-public interface PriorityQueue {
+public interface PriorityQueue<T> {
     /**
      * The Position interface represents a type that can
      * be used for the decreaseKey operation.
@@ -31,7 +33,7 @@ public interface PriorityQueue {
          * Returns the value stored at this position.
          * @return the value stored at this position.
          */
-        Comparable getValue( );
+        Result getValue( );
     }
     
     /**
@@ -40,21 +42,21 @@ public interface PriorityQueue {
      * @param x the item to insert.
      * @return may return a Position useful for decreaseKey.
      */
-    Position insert( Comparable x );
+    Position insert( Result x );
     
     /**
      * Find the smallest item in the priority queue.
      * @return the smallest item.
      * @throws UnderflowException if empty.
      */
-    Comparable findMin( );
+    Result findMin( );
     
     /**
      * Remove the smallest item from the priority queue.
      * @return the smallest item.
      * @throws UnderflowException if empty.
      */
-    Comparable deleteMin( );
+    Result deleteMin( );
     
     /**
      * Test if the priority queue is logically empty.
@@ -85,5 +87,5 @@ public interface PriorityQueue {
      * @throws IllegalArgumentException if p invalid.
      * @throws UnsupportedOperationException if appropriate.
      */
-    void decreaseKey( Position p, Comparable newVal );
+    void decreaseKey( Position p, Result newVal );
 }

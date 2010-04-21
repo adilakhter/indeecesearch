@@ -1,5 +1,6 @@
 package indeece;
 
+import java.util.Collection;
 import java.util.Set;
 
 // abstraction for a search model (i.e. Probabilistic, Vector Space, Boolean)
@@ -14,7 +15,7 @@ public abstract class Model
 	}
 	
 	// abstract search method.
-	public abstract Set<Result> search(String query) throws Exception;
+	public abstract Collection<Result> search(String query) throws Exception;
 	
 	// inner class: abstraction for a search result.
 	public class Result implements Comparable<Result>
@@ -22,6 +23,7 @@ public abstract class Model
 		private Doc		doc = null;
 		private float	score = 0;
 		
+
 		public Result(Doc d, float score)
 		{
 			this.doc	= d;
@@ -47,6 +49,10 @@ public abstract class Model
 		public String toString()
 		{
 			return this.doc.getTitle()+ ((Indeece.isActiveModel("Vector"))?" (score: "+this.score+")":"");
+		}
+
+		private Model getOuterType() {
+			return Model.this;
 		}
 	}
 }

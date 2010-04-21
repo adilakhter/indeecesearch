@@ -1,10 +1,14 @@
 package indeece;
 
+import indeece.Model.Result;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Iterator;
 import java.util.TreeSet;
+
+import util.BinaryHeap;
 
 public class VectModel extends Model {
 
@@ -17,66 +21,120 @@ public class VectModel extends Model {
 	}
 	
 	@Override
-	public Set<Result> search(String rawQuery) 
+	public BinaryHeap search(String rawQuery) 
 	{
-		String query = index.preprocess(rawQuery);
-		if(query == null)
-			return new HashSet<Result>();
-
-		// record query terms and their idf values
-		// in the idf_q dictionary.
-		// also, record relevant documents in docsSet.
-		HashMap<String, Float>	idf_q	= new HashMap<String, Float>();
-		HashSet<Doc> 			docSet 	= new HashSet<Doc>();
+		//HashMap holding the terms and their frequencies in the queries
+		HashMap<String,Integer> queryTerms = preprocess(rawQuery);
+		//Binary Heap to hold results
+		BinaryHeap  resultsHeap = new BinaryHeap();
 		
-		String	words[] = query.split(" ");
-		for(int i=0; i < words.length; i++) {
-			PostingList plist = index.getPostingList(words[i]);
-			if(plist == null)
-				continue;
-			// record idf value.
-			idf_q.put(words[i], idfCalc(words[i]));
-			// record relevant documents.
-			Iterator<PostingList.Item>	plItemIter = plist.iterator();
-			while(plItemIter.hasNext())
-				docSet.add(plItemIter.next().getDoc());
-		}
-
+		if(queryTerms == null)
+			return new BinaryHeap();
+		
 		// prune terms with low idf if necessary.
 		if(highIdfOpt)
-			highIdfOptPrune(idf_q);
+			resultsHeap = pruneLowIdfTerms(queryTerms);
 		
-		// calculate cosine score and make a Result entry for each relevant document.
-		TreeSet<Result>	results		= new TreeSet<Result>();
-		Iterator<Doc>	docSetIter	= docSet.iterator();
-		float score;
-		while(docSetIter.hasNext()) {
-			Doc d = docSetIter.next();
-			if((score = cosineScore(d, idf_q)) == 0) {
-				// might get zero score if we've prunned idf_q.
-				continue;
-			}
-			results.add(new Result(d, score));
-		}
+		resultsHeap = calculateRank(queryTerms);
+		
+		return resultsHeap;
+	}
+	
+	private BinaryHeap pruneLowIdfTerms(HashMap<String, Integer> queryTerms) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-		return results;
+	private HashMap<String,Integer> preprocess(String rawQuery) {
+		HashMap<String,Integer> termFrequencyMap = new HashMap<String,Integer>();
+		String query = index.preprocess(rawQuery);
+		
+		String	words[] = query.split(" ");
+		
+		for(int i=0; i<words.length; i++) {
+			if( termFrequencyMap.containsKey(words[i]))
+				termFrequencyMap.put(words[i],termFrequencyMap.get(words[i])+1);
+			else
+				termFrequencyMap.put(words[i],1);
+		}
+		return termFrequencyMap;
+	}
+
+	
+	private BinaryHeap calculateRank(HashMap<String,Integer> queryTerms)
+	{
+		HashMap<Doc,Float> scoresMap = new HashMap<Doc,Float>();
+		BinaryHeap resultHeap = new BinaryHeap();
+		float termWeight = 0,
+			  queryWeightNorm = 0,
+			  docWeightNorm = 0;
+		String currentTerm;
+		
+		Iterator<String> termIter = queryTerms.keySet().iterator();
+		
+		//Iterate over all terms in the query
+		while(termIter.hasNext()) {
+			currentTerm = termIter.next();
+			
+			//Calculate the dot product of the query and the documents, and return the term's weight
+			termWeight = updateDotProduct(scoresMap,currentTerm,queryTerms.get(currentTerm));
+			
+			//Update the query weight norm
+			queryWeightNorm += (float) Math.pow(termWeight,2.0);
+		}
+		
+		//This will be the final query Weight norm
+		queryWeightNorm = (float) Math.sqrt(queryWeightNorm);
+		
+		
+		Iterator<Doc> relevantDocIter = scoresMap.keySet().iterator();
+		Doc currentDoc;
+		float score;
+		
+		while(relevantDocIter.hasNext()) {
+			 currentDoc = relevantDocIter.next();
+			 docWeightNorm = currentDoc.getVectorNorm();
+			 score = scoresMap.get(currentDoc)/ (queryWeightNorm*docWeightNorm);
+			 
+			 //Insert result into heap
+			 resultHeap.insert(new Model.Result(currentDoc,score));
+			
+		}		
+		return resultHeap;
 	}
 	
-	private void highIdfOptPrune(HashMap<String, Float> idf_q)
-	{
-		// TODO
-	}
-	
-	private float idfCalc(String term)
-	{
-		// TODO
-		return 0;
-	}
-	
-	private float cosineScore(Doc d, HashMap<String, Float> idf_q)
-	{
-		// TODO
-		return 0;
+	private float updateDotProduct(HashMap<Doc, Float> scoresMap,
+			String currentTerm, int termFrequency) {
+		//Get the posting list of the current term
+		PostingList currentTermList = Indeece.getActiveIndex().getPostingList(currentTerm);   
+		if(currentTermList==null)
+			return 0;
+
+		//Get the term Idf from the posting list
+		float termIdf = currentTermList.getTermIdf();
+		
+		//Calculate the term component of the query 
+		float termWeight = (1 +  (float) Math.log10(termFrequency)) * termIdf ;
+		
+		Iterator<PostingList.Item> docIter = currentTermList.iterator();
+		Doc currentDoc;
+		PostingList.Item item;
+		float documentWeight,
+		      currentScore = 0;
+		
+		//Iterate over all documents that are in the query
+		while(docIter.hasNext()) {
+			item = docIter.next();
+			currentDoc = item.getDoc();
+			documentWeight = (float) (1 + Math.log10(item.getFrequency())) * termIdf;
+			if(scoresMap.containsKey(currentDoc))	
+				currentScore = scoresMap.get(currentDoc);
+			
+			//Update the score of each document that has the currentTerm
+			scoresMap.put(currentDoc, currentScore + (documentWeight * termWeight) );
+		}
+		
+		return termWeight; 
 	}
 
 }

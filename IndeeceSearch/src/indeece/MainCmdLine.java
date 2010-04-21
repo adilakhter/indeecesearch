@@ -5,6 +5,7 @@ import indeece.Model.Result;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -61,7 +62,7 @@ public class MainCmdLine
 		
 		// start user interaction.
 		BufferedReader 		input 	= new BufferedReader(new InputStreamReader(System.in));
-		Set<Model.Result>	results	= null;
+		Collection<Model.Result>	results	= null;
 		String query = new String();
 		while(true)
 		{
@@ -87,8 +88,8 @@ public class MainCmdLine
 	}
 	
 	//When a boolean query is invalid, direct the query towards the Vector Model
-	private static Set<Result> switchToVectorModel(String query) {
-		Set<Result> results = null;
+	private static Collection<Result> switchToVectorModel(String query) {
+		Collection<Result> results = null;
 		System.out.println("Invalid boolean query. Querying vector model instead");
 		Indeece.setActive("Vector");
 		try {

@@ -1,5 +1,9 @@
 package util;
 
+import java.util.Collection;
+import java.util.Iterator;
+
+import indeece.VectModel;
 //BinaryHeap class
 //
 // CONSTRUCTION: empty or with initial array.
@@ -12,28 +16,29 @@ package util;
 // void makeEmpty( )      --> Remove all items
 // ******************ERRORS********************************
 // Throws UnderflowException for findMin and deleteMin when empty
+import indeece.Model.Result;
 
 /**
  * Implements a binary heap.
  * Note that all "matching" is based on the compareTo method.
  * @author Mark Allen Weiss
  */
-public class BinaryHeap implements PriorityQueue {
+public class BinaryHeap   implements PriorityQueue<Result>,Collection<Result>{
     /**
      * Construct the binary heap.
      */
     public BinaryHeap( ) {
         currentSize = 0;
-        array = new Comparable[ DEFAULT_CAPACITY + 1 ];
+        array = new Result[ DEFAULT_CAPACITY + 1 ];
     }
     
     /**
      * Construct the binary heap from an array.
      * @param items the inital items in the binary heap.
      */
-    public BinaryHeap( Comparable [ ] items ) {
+    public BinaryHeap( Result [ ] items ) {
         currentSize = items.length;
-        array = new Comparable[ items.length + 1 ];
+        array = new Result[ items.length + 1 ];
         
         for( int i = 0; i < items.length; i++ )
             array[ i + 1 ] = items[ i ];
@@ -46,7 +51,7 @@ public class BinaryHeap implements PriorityQueue {
      * @param x the item to insert.
      * @return null, signifying that decreaseKey cannot be used.
      */
-    public PriorityQueue.Position insert( Comparable x ) {
+    public PriorityQueue.Position insert( Result x ) {
         if( currentSize + 1 == array.length )
             doubleArray( );
         
@@ -61,11 +66,15 @@ public class BinaryHeap implements PriorityQueue {
         return null;
     }
     
+    public int getSize() {
+    	return currentSize;
+    }
+    
     /**
      * @throws UnsupportedOperationException because no Positions are returned
      * by the insert method for BinaryHeap.
      */
-    public void decreaseKey( PriorityQueue.Position p, Comparable newVal ) {
+    public void decreaseKey( PriorityQueue.Position p, Result newVal ) {
         throw new UnsupportedOperationException( "Cannot use decreaseKey for binary heap" );
     }
     
@@ -74,7 +83,7 @@ public class BinaryHeap implements PriorityQueue {
      * @return the smallest item.
      * @throws UnderflowException if empty.
      */
-    public Comparable findMin( ) {
+    public Result findMin( ) {
         if( isEmpty( ) )
             throw new UnderflowException( "Empty binary heap" );
         return array[ 1 ];
@@ -85,8 +94,8 @@ public class BinaryHeap implements PriorityQueue {
      * @return the smallest item.
      * @throws UnderflowException if empty.
      */
-    public Comparable deleteMin( ) {
-        Comparable minItem = findMin( );
+    public Result deleteMin( ) {
+        Result minItem = findMin( );
         array[ 1 ] = array[ currentSize-- ];
         percolateDown( 1 );
         
@@ -128,7 +137,7 @@ public class BinaryHeap implements PriorityQueue {
     private static final int DEFAULT_CAPACITY = 100;
     
     private int currentSize;      // Number of elements in heap
-    private Comparable [ ] array; // The heap array
+    private Result [ ] array; // The heap array
     
     /**
      * Internal method to percolate down in the heap.
@@ -136,7 +145,7 @@ public class BinaryHeap implements PriorityQueue {
      */
     private void percolateDown( int hole ) {
         int child;
-        Comparable tmp = array[ hole ];
+        Result tmp = array[ hole ];
         
         for( ; hole * 2 <= currentSize; hole = child ) {
             child = hole * 2;
@@ -155,36 +164,78 @@ public class BinaryHeap implements PriorityQueue {
      * Internal method to extend array.
      */
     private void doubleArray( ) {
-        Comparable [ ] newArray;
+        Result [ ] newArray;
         
-        newArray = new Comparable[ array.length * 2 ];
+        newArray = new Result[ array.length * 2 ];
         for( int i = 0; i < array.length; i++ )
             newArray[ i ] = array[ i ];
         array = newArray;
     }
     
-    // Test program
-    public static void main( String [ ] args ) {
-        int numItems = 10000;
-        BinaryHeap h1 = new BinaryHeap( );
-        Integer [ ] items = new Integer[ numItems - 1 ];
-        
-        int i = 37;
-        int j;
-        
-        for( i = 37, j = 0; i != 0; i = ( i + 37 ) % numItems, j++ ) {
-            h1.insert( new Integer( i ) );
-            items[ j ] = new Integer( i );
-        }
-        
-        for( i = 1; i < numItems; i++ )
-            if( ((Integer)( h1.deleteMin( ) )).intValue( ) != i )
-                System.out.println( "Oops! " + i );
-        
-        BinaryHeap h2 = new BinaryHeap( items );
-        for( i = 1; i < numItems; i++ )
-            if( ((Integer)( h2.deleteMin( ) )).intValue( ) != i )
-                System.out.println( "Oops! " + i );
-    }
+
+	@Override
+	public boolean add(Result e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends Result> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean contains(Object o) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Iterator<Result> iterator() {
+		return new HeapIterator<Result>(this);
+	}
+
+	@Override
+	public boolean remove(Object o) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Object[] toArray() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> T[] toArray(T[] a) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 

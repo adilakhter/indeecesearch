@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 public class HeapIterator<T> implements Iterator<Result> {
 	private BinaryHeap bHeap;
+	//Get K results
 	private int K = 10;
 	public HeapIterator(BinaryHeap binaryHeap) {
 		bHeap = binaryHeap;

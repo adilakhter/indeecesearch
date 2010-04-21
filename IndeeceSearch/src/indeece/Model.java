@@ -49,7 +49,15 @@ public abstract class Model
 		public int compareTo(Result other) 
 		{
 			//System.out.println("Here"+ this.score +"  "+ (double)-((this.score - other.score)));
+//			if (score == other.score)
+//		    	return 0;
+//		    else if (score > other.score)
+//		    	return -1;
+//		    else return 1;
+			
 			return (int)-(100000*(this.score - other.score));
+			
+		    
 		}
 		
 		public String toString()

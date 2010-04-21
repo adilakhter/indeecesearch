@@ -40,42 +40,36 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 	{
 		HashMap<Doc,Float> scoresMap = new HashMap<Doc,Float>();
 		BinaryHeap resultHeap = new BinaryHeap();
-		float termWeight = 0, queryWeightNorm = 0, docWeightNorm = 0;
-		Iterator<String> termIter = queryTermFrequencyMapping.keySet().iterator();
-
-		String currentTerm;
+		float termWeight = 0, docWeightNorm = 0, queryWeightNorm = 0;
 		//Iterate over all terms in the query
-		while(termIter.hasNext()) {
-			currentTerm = termIter.next();
-
+		for ( String currentTerm : queryTermFrequencyMapping.keySet())
+		{
 			//Calculate the dot product of the query and the documents, and return the term's weight
-			termWeight = updateDotProduct(model.index, scoresMap,currentTerm, queryTermFrequencyMapping.get(currentTerm));
-
+			// Determine the score added to the similarity of each document
+			// indexed under this token and update the length of the
+			// query vector with the square of the weight for this token.
+		    termWeight = updateDotProduct(model.index, scoresMap,currentTerm, queryTermFrequencyMapping.get(currentTerm));
 			//Update the query weight norm
 			queryWeightNorm += (float) Math.pow(termWeight,2.0);
 		}
-
-		//This will be the final query Weight norm
+		// Finalize the length of the query vector by taking the square-root of the
+	    // final sum of squares of its token weights.
 		queryWeightNorm = (float) Math.sqrt(queryWeightNorm);
 
-		Iterator<Doc> relevantDocIter = scoresMap.keySet().iterator();
-		Doc currentDoc;
 		float score = 0;
-
-		while(relevantDocIter.hasNext()) {
-			currentDoc = relevantDocIter.next();
+		for ( Doc currentDoc :scoresMap.keySet())
+		{
 			docWeightNorm = currentDoc.getVectorNorm();
-
 			if(docWeightNorm==0)
 			{
 				System.out.println("ZERO WEIGHT NORM");
+				score = 0;
 			}
-
-			if(termWeight!=0)
-			{	
+			else if(termWeight!=0)
+			{
+				//Normalize score for the lengths of the two document vectors
 				score = scoresMap.get(currentDoc) / (queryWeightNorm*docWeightNorm);
 			}
-
 			//Insert result into heap
 			resultHeap.insert(model.CreateResult(currentDoc, score));
 		}		

@@ -44,7 +44,7 @@ public abstract class Model
 		public int compareTo(Result other) 
 		{
 			//System.out.println("Here"+ this.score +"  "+ (double)-((this.score - other.score)));
-			return (int)-(100*(this.score - other.score));
+			return (int)-(100000*(this.score - other.score));
 		}
 		
 		public String toString()

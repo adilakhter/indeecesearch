@@ -118,7 +118,8 @@ public class VectModel extends Model {
 		
 		
 		//Calculate the term component of the query 
-		float termWeight = (1 +  (float) Math.log10((double)termFrequency)) * termIdf ;
+		//float termWeight = (1 +  (float) Math.log10((double)termFrequency)) * termIdf ;
+		float termWeight = (float)termFrequency * termIdf ;
 		
 		Iterator<PostingList.Item> docIter = currentTermList.iterator();
 		Doc currentDoc;
@@ -130,7 +131,8 @@ public class VectModel extends Model {
 		while(docIter.hasNext()) {
 			item = docIter.next();
 			currentDoc = item.getDoc();
-			documentWeight = (float) (1 + Math.log10((double)item.getFrequency())) * termIdf;
+			//documentWeight = (float) (1 + Math.log10((double)item.getFrequency())) * termIdf;
+			documentWeight = (float) item.getFrequency() * termIdf;
 			if(scoresMap.containsKey(currentDoc))	
 				currentScore = scoresMap.get(currentDoc);
 			

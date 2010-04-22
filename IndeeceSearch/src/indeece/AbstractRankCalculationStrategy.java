@@ -34,7 +34,7 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 		{
 			// finalizing the vector norm
 			docIt.finalizeVectorNorm();
-			System.out.println( "Title : "+ docIt.getTitle() + " Vector Norm : "+ docIt.getVectorNorm());
+			//System.out.println( "Title : "+ docIt.getTitle() + " Vector Norm : "+ docIt.getVectorNorm());
 		}
 	}
 

@@ -12,24 +12,28 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 	@Override
 	public void calculateVectorNorms(Index indexObject) {
 		HashMap<String , PostingList > entries = indexObject.getIndexedTerms();
-		HashSet<PostingList> indexSet =  new HashSet<PostingList>(entries.values());
+	
 		float idf,weight;
 
-		for (PostingList postingList: indexSet)
-		{	
+		for( String currentKey : entries.keySet())
+		{
+			PostingList postingList = entries.get(currentKey);
 			idf = getIdf(indexObject.getIndexedDocsNumber(), postingList.size());
 			
 			postingList.setTermIdf(idf);
 			for ( PostingList.Item currentItem : postingList)
 			{	
 				weight = getDocumentTermWeight( currentItem.getFrequency(), idf); // calculating the weight component for the current item
+				
 				currentItem.getDoc().addToNorm(weight);
+				System.out.println( currentKey + " "+ currentItem.getDoc().getTitle() + " " + weight + " "+ currentItem.getDoc().getVectorNorm());
 			}
 		}
 		for ( Doc docIt: Indeece.getCorpus())
 		{
 			// finalizing the vector norm
 			docIt.finalizeVectorNorm();
+			System.out.println( "Title : "+ docIt.getTitle() + " Vector Norm : "+ docIt.getVectorNorm());
 		}
 	}
 
@@ -45,9 +49,9 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 		for ( String currentTerm : queryTermFrequencyMapping.keySet())
 		{
 			//Calculate the dot product of the query and the documents, and return the term's weight
-			// Determine the score added to the similarity of each document
-			// indexed under this token and update the length of the
-			// query vector with the square of the weight for this token.
+			//Determine the score added to the similarity of each document
+			//indexed under this token and update the length of the
+			//query vector with the square of the weight for this token.
 		    termWeight = updateDotProduct(model.index, scoresMap,currentTerm, queryTermFrequencyMapping.get(currentTerm));
 			//Update the query weight norm
 			queryWeightNorm += (float) Math.pow(termWeight,2.0);
@@ -127,7 +131,7 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 	protected float getIdf(int totalNoOfDocuments, int documentFrequency) {
 		try
 		{
-			return (float) Math.log10(totalNoOfDocuments/documentFrequency); //Calculate term idf
+			return (float) Math.log10((double)totalNoOfDocuments/documentFrequency); //Calculate term idf
 		}
 		catch( Exception ex)
 		{

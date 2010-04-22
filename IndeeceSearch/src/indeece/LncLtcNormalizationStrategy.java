@@ -10,7 +10,7 @@ public class LncLtcNormalizationStrategy extends AbstractRankCalculationStrategy
 
 	@Override
 	protected float getDocumentTermWeight(float termFrequency, float termIdf) {
-		termFrequency = (float) (1 + Math.log10((double)termFrequency));//Logarithmic term frequency
+		termFrequency = (float) ((double)1 + Math.log10((double)termFrequency));//Logarithmic term frequency
 		termIdf = 1; // no term idf
 		
 		return termFrequency * termIdf;
@@ -18,7 +18,7 @@ public class LncLtcNormalizationStrategy extends AbstractRankCalculationStrategy
 
 	@Override
 	protected float getQueryTermWeight(float termFrequency, float termIdf) {
-		termFrequency = (float) (1 + Math.log10((double)termFrequency));//Logarithmic term frequency
+		termFrequency = (float) ((double)1 + Math.log10((double)termFrequency));//Logarithmic term frequency
 		termIdf = termIdf; // term idf
 		
 		return termFrequency * termIdf;

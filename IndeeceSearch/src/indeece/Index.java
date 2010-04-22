@@ -29,7 +29,8 @@ public class Index implements java.io.Serializable
 	
 	// stemmer
 	private static IStemmer stemmer = new PorterStemmer();
-	private static IFilter stopwordFilter = new StopwordFilter();
+	//private static IFilter stopwordFilter = new StopwordFilter();
+	private static IFilter stopwordFilter = null;
 	private boolean stemming;
 	
 	private int indexedDocsNumber;
@@ -92,10 +93,12 @@ public class Index implements java.io.Serializable
 	public void addDoc(Doc doc)
 	{
 		// index document's title & body.
+		
+		System.out.println("Before Prepreocessing :  " + doc.getTitle() + " " + doc.getBody().trim());
 		String content = preprocess(doc.getTitle() + " " + doc.getBody());
 		if(content == null)
 			return;
-		
+		System.out.println("After Prepreocessing :  " + content);
 		content=content.trim();
 		String terms[] = content.split(" ");
 		for(int i=0; i < terms.length; i++)
@@ -137,8 +140,10 @@ public class Index implements java.io.Serializable
 
 		for(int i=0; i < words.length; i++) {
 			String term = new String();
+		
 			try {
 				term = preprocessWord(words[i]).firstElement();
+				
 				if(ret == "") 
 					ret= term;
 				else
@@ -156,14 +161,16 @@ public class Index implements java.io.Serializable
 	{
 		
 		String term = word.toLowerCase().trim();
-		
 		Vector<String>  preprocessed=new Vector<String>();
-		if(word.length() <= 1)
+		if(word.length() <1)
 			return preprocessed;
 		
 		// remove stopwords
-		if(stopwordFilter.Filter(term) == null)
-			return preprocessed;
+		if ( stopwordFilter != null)
+		{
+			if(stopwordFilter.Filter(term) == null)
+				return preprocessed;
+		}
 		// perform stemming
 		if(this.stemming) {
 			System.out.print("Term:" +term);

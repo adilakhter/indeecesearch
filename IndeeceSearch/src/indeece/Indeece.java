@@ -20,10 +20,6 @@ public class Indeece
 	//Get K results
 	private static int K = 10;
 	
-	public static ICosineRankCalculationStrategy  getCosineStrategy()
-	{
-		return consineCalculationStrategy;
-	}
 	
 	public static void createIndex(CorpusBuilder cBuilder, boolean stemming, boolean permuterm) {
 		corpus = cBuilder.getCorpus();
@@ -147,4 +143,16 @@ public class Indeece
 	public static void setK(int k) {
 		K = k;
 	}
+
+	public static void setCosineRankingStrategy(
+			ICosineRankCalculationStrategy strategy) {
+		
+		consineCalculationStrategy = strategy;
+	}
+	
+	public static ICosineRankCalculationStrategy  getCosineStrategy()
+	{
+		return consineCalculationStrategy;
+	}
+	
 }

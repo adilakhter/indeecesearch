@@ -44,7 +44,12 @@ public abstract class Model
 		{
 			return this.score;
 		}
-
+		
+		public Doc getDocument()
+		{
+			return doc;
+		}
+		
 		@Override
 		public int compareTo(Result other) 
 		{

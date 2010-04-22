@@ -40,6 +40,7 @@ public class MainCmdLine
 		if(!opts.has("r")) {
 			// create inverted index from corpusDir
 			try {
+				Indeece.setCosineRankingStrategy( new SubLinearRankCalculationStrategy());
 				Indeece.createIndex(new CorpusBuilder(pathName), opts.has("s"), opts.has("p"));
 				if(opts.has("w"))
 					Indeece.storeIndeece(pathName);

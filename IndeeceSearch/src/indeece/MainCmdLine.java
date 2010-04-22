@@ -71,8 +71,11 @@ public class MainCmdLine
 			// perform search
 			try {
 				query=input.readLine();
+				
 				results = Indeece.activeModel().search(query);
-			} catch(Exception e) {	
+			} 
+			catch(Exception e) {
+				e.printStackTrace();
 				if( Indeece.isActiveModel("Boolean")) {
 					results=switchToVectorModel(query);
 				}

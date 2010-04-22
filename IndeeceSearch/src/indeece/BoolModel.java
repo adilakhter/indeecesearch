@@ -27,6 +27,8 @@ public class BoolModel extends Model {
 	public Set<Result> search(String rawQuery)
 	throws Exception
 	{	
+		rawQuery=rawQuery.replace("(", " ( ");
+		rawQuery=rawQuery.replace(")", " ) ");
 		// parse query.
 		CharStream charStream = new ANTLRStringStream(rawQuery);
 	    booleanGrammarLexer lexer = new booleanGrammarLexer(charStream);

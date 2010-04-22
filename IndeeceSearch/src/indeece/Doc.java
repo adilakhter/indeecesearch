@@ -62,7 +62,6 @@ public class Doc implements Comparable<Doc>,Serializable{
 	public static Set<Doc> and(Set<Doc> set1, Set<Doc> set2) {
 		
 		if((set1 == null) || (set2 == null)) {
-			System.err.println("Doc.and() returning null!");
 			return new TreeSet<Doc>();
 		}
 		//set1.retainAll(set2);

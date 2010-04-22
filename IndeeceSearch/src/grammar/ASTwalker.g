@@ -20,6 +20,7 @@ options {
 
 prog  returns [Set<Doc>  result]
       : op1=expr EOF         { result=op1;}
+      | EOF                  { result=null;}
       ;
       
 expr   returns [Set<Doc>  result]
@@ -37,8 +38,9 @@ expr   returns [Set<Doc>  result]
        
       | TOKEN                       {
       									Vector<String> processedTerm = Indeece.getActiveIndex().preprocessWord($TOKEN.getText());
-      									if(processedTerm.isEmpty())
+      									if(processedTerm.isEmpty()) {
       										  return null;
+      										  }
       									else if(processedTerm.size()==1) {
       									    result = Indeece.getActiveIndex().getDocumentSet(processedTerm.firstElement());
       									}

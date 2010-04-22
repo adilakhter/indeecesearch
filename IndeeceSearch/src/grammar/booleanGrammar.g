@@ -45,7 +45,8 @@ options {
 
 
 
-prog  : expr EOF;
+prog  : expr EOF
+      | EOF;
 
 expr  :
     multExpr ((op1='AND'^|'OR'^) multExpr)*  

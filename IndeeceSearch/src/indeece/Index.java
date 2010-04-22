@@ -135,21 +135,34 @@ public class Index implements java.io.Serializable
 	{
 		String	ret = "";
 		String words[];
+		Vector<String> terms; 
+		Iterator<String> termsIt;
 		if (indexMode)
 			words	= content.split("[\\s\t\n\r\f\'\"\\!@#$%^&()_\\+\\-=\\{\\}\\|\\[\\]/`~,>.\\?:;<\\*]");
 		else
 			words	= content.split("[\\s\t\n\r\f\'\"\\!@#$%^&()_\\+\\-=\\{\\}\\|\\[\\]/`~,>.\\?:;<]");
 
 		for(int i=0; i < words.length; i++) {
-			String term = new String();
+			terms = new Vector<String>();
 		
 			try {
-				term = preprocessWord(words[i]).firstElement();
-				
-				if(ret == "") 
-					ret= term;
-				else
-					ret = ret + " " +term;
+				if (indexMode) {
+					terms.add(preprocessWord(words[i]).firstElement());
+					if(ret == "") 
+						ret= terms.firstElement();
+					else
+						ret = ret + " " +terms.firstElement();
+				}
+				else {
+					terms=preprocessWord(words[i]);
+					termsIt  = terms.iterator();
+					while(termsIt.hasNext()) {
+						if(ret == "") 
+							ret= termsIt.next();
+						else
+							ret = ret + " " +termsIt.next();
+					}
+				}
 			}
 			catch(NoSuchElementException e) {
 				continue;

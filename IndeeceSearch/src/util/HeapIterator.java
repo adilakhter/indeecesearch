@@ -1,13 +1,14 @@
 package util;
 
+import indeece.Indeece;
 import indeece.Model.Result;
 
 import java.util.Iterator;
 
 public class HeapIterator<T> implements Iterator<Result> {
 	private BinaryHeap bHeap;
-	//Get K results
-	private int K = 10;
+	private int K = Indeece.getK();
+	
 	public HeapIterator(BinaryHeap binaryHeap) {
 		bHeap = binaryHeap;
 	}

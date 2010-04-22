@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import indeece.CorpusBuilder;
+import indeece.ICosineRankCalculationStrategy;
 import indeece.Indeece;
 import indeece.LncLtcNormalizationStrategy;
 import indeece.Model;
 import indeece.NaturalRankCalculationStrategy;
 import indeece.SubLinearRankCalculationStrategy;
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 public class SerializationTests extends TestCase {
@@ -102,5 +104,19 @@ public class SerializationTests extends TestCase {
 			}
 	 }
 	 
+	 
+	 public void testSwitchingIndece()
+	 {
+		 Indeece.setCosineRankingStrategy( new LncLtcNormalizationStrategy());	
+		 
+		 String [] strategies = Indeece.getCosineRankingStrategiesString();
+		 
+		 Indeece.setCosineRankingStrategyFromName(strategies[0]);
+		 
+		 Assert.assertTrue(Indeece.getCosineStrategy() instanceof  NaturalRankCalculationStrategy);
+		 
+		 
+		 
+	 }
 	
 }

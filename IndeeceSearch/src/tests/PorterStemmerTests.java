@@ -323,10 +323,11 @@ public class PorterStemmerTests extends TestCase
 	{
 		String [][] testWords ={
 				{"still" , "still"}
-				 ,{"will" , "will"}
-				 ,{"all" , "all"}
-				 ,{"alls" , "all"}
-				 , {"digitizer" , "digit" }
+				,{"will" , "will"}
+				,{"all" , "all"}
+				,{"alls" , "all"}
+				, {"digitizer" , "digit" }
+				 , {"g*d" , "g*d" }
 		};
 		invokeAndAssertExpectationMet(testWords);
 		

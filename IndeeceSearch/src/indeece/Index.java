@@ -155,15 +155,23 @@ public class Index implements java.io.Serializable
 				continue;
 			}
 		}
+		if ( content.contains("*"))
+		{
+			System.out.println(ret);
+			
+		}
 		
 		return ret;
 	}
-	
+		
 	public Vector<String> preprocessWord(String word)
 	{
 		
 		String term = word.toLowerCase().trim();
 		Vector<String>  preprocessed=new Vector<String>();
+		
+		
+		
 		if(word.length() <1)
 			return preprocessed;
 		

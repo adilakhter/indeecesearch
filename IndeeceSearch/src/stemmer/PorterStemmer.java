@@ -86,7 +86,7 @@ public class PorterStemmer implements IStemmer, java.io.Serializable {
 	    
 	    // stripping unnecessary letter or digits
 	    for (int i = 0; i <  word.length(); i++) {
-	      if (Character.isLetterOrDigit(word.charAt(i)))
+	      if (Character.isLetterOrDigit(word.charAt(i)) || word.charAt(i) == '*')
 	      {
 	    	  retString += word.charAt(i);
 	      }

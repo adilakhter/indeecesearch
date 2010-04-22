@@ -23,7 +23,7 @@ public class SerializationTests extends TestCase {
 	 {
 		 	Indeece.setCosineRankingStrategy( new NaturalRankCalculationStrategy());	
 		 	try {
-				Indeece.createIndex(new CorpusBuilder(PathName), false, true);
+				Indeece.createIndex(new CorpusBuilder(PathName), true, true);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -31,7 +31,7 @@ public class SerializationTests extends TestCase {
 			Indeece.setActive("Boolean");
 			
 			Collection<Model.Result> results	= null;
-			String query = "a*i*a*a";
+			String query = "a*e*i*a"; // america 
 			try {
 				results = Indeece.activeModel().search(query);
 				System.out.println("search results .... Query: ["+ query + "]");
@@ -48,11 +48,11 @@ public class SerializationTests extends TestCase {
 			}
 	 }
 	
-	public void testSerialization()
+	 public void testSerialization()
 	 {
 		 	Indeece.setCosineRankingStrategy( new NaturalRankCalculationStrategy());	
 		 	try {
-				Indeece.createIndex(new CorpusBuilder(PathName), false, false);
+				Indeece.createIndex(new CorpusBuilder(PathName), true, false);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -60,7 +60,7 @@ public class SerializationTests extends TestCase {
 			Indeece.setActive("Vector");
 			
 			Collection<Model.Result> results	= null;
-			String query = "gold silver truck";
+			String query = "g*d";
 			try {
 				results = Indeece.activeModel().search(query);
 				System.out.println("search results .... Query: ["+ query + "]");
@@ -89,7 +89,7 @@ public class SerializationTests extends TestCase {
 			Indeece.setActive("Vector");
 			
 			Collection<Model.Result> results	= null;
-			String query = "gold silver truck";
+			String query = "silver";
 			try {
 				results = Indeece.activeModel().search(query);
 				System.out.println("search results .... Query: ["+ query + "]");
@@ -134,7 +134,6 @@ public class SerializationTests extends TestCase {
 				e.printStackTrace();
 			}
 	 }
-	 
 	 
 	 public void testSwitchingIndece()
 	 {

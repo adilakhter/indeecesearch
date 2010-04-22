@@ -42,8 +42,9 @@ public class VectModel extends Model {
 	private HashMap<String,Integer> preprocess(String rawQuery) {
 		
 		HashMap<String,Integer> termFrequencyMap = new HashMap<String,Integer>();
+		System.out.println("rawQuery before :"+rawQuery);
 		String query = index.preprocess(rawQuery);
-		
+		System.out.println("rawQuery after :"+rawQuery);
 		String	words[] = query.split(" ");
 		
 		for(int i=0; i<words.length; i++) {
@@ -185,7 +186,6 @@ public class VectModel extends Model {
 		    	 currentThreshold = 0;
 		    	 
 	     }
-		     
 	     return retTerms;
     }
 }

@@ -134,7 +134,7 @@ public class Index implements java.io.Serializable
 	public String preprocess(String content)
 	{
 		String	ret = "";
-		String	words[]	= content.split("[\\s\t\n\r\f\'\"\\!@#$%^&\\*()_\\+\\-=\\{\\}\\|\\[\\]/`~,>.\\?:;<]");
+		String	words[]	= content.split("[\\s\t\n\r\f\'\"\\!@#$%^&()_\\+\\-=\\{\\}\\|\\[\\]/`~,>.\\?:;<]");
 
 		for(int i=0; i < words.length; i++) {
 			String term = new String();

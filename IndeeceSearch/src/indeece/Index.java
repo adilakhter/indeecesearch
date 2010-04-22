@@ -162,9 +162,8 @@ public class Index implements java.io.Serializable
 			return preprocessed;
 		
 		// remove stopwords
-		if(stopwordFilter.Filter(term) == "")
+		if(stopwordFilter.Filter(term) == null)
 			return preprocessed;
-		
 		// perform stemming
 		if(this.stemming) {
 			System.out.print("Term:" +term);

@@ -39,8 +39,11 @@ expr   returns [Set<Doc>  result]
       									Vector<String> processedTerm = Indeece.getActiveIndex().preprocessWord($TOKEN.getText());
       									if(processedTerm.isEmpty())
       										  return null;
-      									else if(processedTerm.size()==1)
-      									    result = Indeece.getActiveIndex().getDocumentSet(processedTerm.firstElement());
+      									else if(processedTerm.size()==1) {
+      									    System.out.println("TOken is"+processedTerm.firstElement());
+      									    //result = Indeece.getActiveIndex().getDocumentSet(processedTerm.firstElement());
+      									}
+      									// Implemented for permuterm
       									else {
       									  Iterator<String> termIt = processedTerm.iterator();
       									  result = Indeece.getActiveIndex().getDocumentSet(termIt.next());

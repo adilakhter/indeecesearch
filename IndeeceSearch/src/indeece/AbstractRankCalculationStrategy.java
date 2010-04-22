@@ -9,6 +9,8 @@ import util.PriorityQueue.Position;
 
 public abstract class AbstractRankCalculationStrategy implements ICosineRankCalculationStrategy {
 
+	public boolean UseFastCosineStrategy = false;
+	
 	@Override
 	public void calculateVectorNorms(Index indexObject) {
 		HashMap<String , PostingList > entries = indexObject.getIndexedTerms();
@@ -26,7 +28,6 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 				weight = getDocumentTermWeight( currentItem.getFrequency(), idf); // calculating the weight component for the current item
 				
 				currentItem.getDoc().addToNorm(weight);
-				System.out.println( currentKey + " "+ currentItem.getDoc().getTitle() + " " + weight + " "+ currentItem.getDoc().getVectorNorm());
 			}
 		}
 		for ( Doc docIt: Indeece.getCorpus())
@@ -40,8 +41,12 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 	public BinaryHeap caculateCosineScore(
 			Model model , 
 			HashMap<String, Integer> queryTermFrequencyMapping
+			
 	)
 	{
+		if ( UseFastCosineStrategy)
+			return  caculateFastCosineScore( model , queryTermFrequencyMapping);
+		
 		HashMap<Doc,Float> scoresMap = new HashMap<Doc,Float>();
 		BinaryHeap resultHeap = new BinaryHeap();
 		float termWeight = 0, docWeightNorm = 0, queryWeightNorm = 0;
@@ -73,6 +78,50 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 			{
 				//Normalize score for the lengths of the two document vectors
 				score = scoresMap.get(currentDoc) / (queryWeightNorm*docWeightNorm);
+			}
+			//Insert result into heap
+			resultHeap.insert(model.CreateResult(currentDoc, score));
+		}		
+		return resultHeap;
+	}
+
+	public BinaryHeap caculateFastCosineScore(
+			Model model , 
+			HashMap<String, Integer> queryTermFrequencyMapping
+	)
+	{
+		HashMap<Doc,Float> scoresMap = new HashMap<Doc,Float>();
+		BinaryHeap resultHeap = new BinaryHeap();
+		float termWeight = 0, docWeightNorm = 0;
+		final int queryTermFrequency = 1;
+		//Iterate over all terms in the query
+		for ( String currentTerm : queryTermFrequencyMapping.keySet())
+		{
+			//Calculate the dot product of the query and the documents, and return the term's weight
+			//Determine the score added to the similarity of each document
+			//indexed under this token and update the length of the
+			//query vector with the square of the weight for this token.
+		    updateDotProduct(model.index, scoresMap,currentTerm, queryTermFrequency);
+			//Update the query weight norm
+		}
+		
+		// Following is not needed
+		// Finalize the length of the query vector by taking the square-root of the
+	    // final sum of squares of its token weights.
+		//queryWeightNorm = (float) Math.sqrt(queryWeightNorm);
+		float score = 0;
+		for ( Doc currentDoc :scoresMap.keySet())
+		{
+			docWeightNorm = currentDoc.getVectorNorm();
+			if(docWeightNorm==0)
+			{
+				System.out.println("ZERO WEIGHT NORM");
+				score = 0;
+			}
+			else if(termWeight!=0)
+			{
+				//Normalize score for the lengths of the two document vectors
+				score = scoresMap.get(currentDoc) / (docWeightNorm);
 			}
 			//Insert result into heap
 			resultHeap.insert(model.CreateResult(currentDoc, score));

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
+import indeece.AbstractRankCalculationStrategy;
 import indeece.CorpusBuilder;
 import indeece.ICosineRankCalculationStrategy;
 import indeece.Indeece;
@@ -30,7 +31,7 @@ public class SerializationTests extends TestCase {
 			Indeece.setActive("Boolean");
 			
 			Collection<Model.Result> results	= null;
-			String query = "a*i*a";
+			String query = "a*i*a*a";
 			try {
 				results = Indeece.activeModel().search(query);
 				System.out.println("search results .... Query: ["+ query + "]");
@@ -141,9 +142,10 @@ public class SerializationTests extends TestCase {
 		 
 		 String [] strategies = Indeece.getCosineRankingStrategiesString();
 		 
-		 Indeece.setCosineRankingStrategyFromName(strategies[0]);
+		 Indeece.setCosineRankingStrategyFromName(strategies[0] , true);
 		 
 		 Assert.assertTrue(Indeece.getCosineStrategy() instanceof  NaturalRankCalculationStrategy);
+		 Assert.assertTrue(((AbstractRankCalculationStrategy)Indeece.getCosineStrategy()).UseFastCosineStrategy);
 		 
 		 
 		 

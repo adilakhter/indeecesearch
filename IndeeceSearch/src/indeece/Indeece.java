@@ -162,15 +162,24 @@ public class Indeece
 	{
 		return new String[]{Natural_Ranking , Sublinear_Ranking , LNC_LTC_Ranking };
 	}
+	
 	public static void setCosineRankingStrategyFromName(
-			String strategyName) {
+			String strategyName , boolean useFastConsieStrategy) {
 		
-		setCosineRankingStrategy(rankingStrategymappings.get(strategyName));
+		setCosineRankingStrategy(rankingStrategymappings.get(strategyName) , useFastConsieStrategy);
 	}
 	
 	public static void setCosineRankingStrategy(
 			ICosineRankCalculationStrategy strategy) {
 		
+		consineCalculationStrategy = strategy;
+		
+	}
+	
+	public static void setCosineRankingStrategy(
+			ICosineRankCalculationStrategy strategy , boolean useFastConsieStrategy) {
+		
+		((AbstractRankCalculationStrategy)strategy).UseFastCosineStrategy = useFastConsieStrategy ; 
 		consineCalculationStrategy = strategy;
 	}
 	

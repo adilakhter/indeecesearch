@@ -40,9 +40,12 @@ public class PermutermQueryProcessor implements IFilter {
 					// cor*ll >> ll$cor*
 					// gib*lt*r >> gib*r >> r$gib*
 					 retString = terms[terms.length -1] + "$" + terms[0];
-					 if (terms.length -2>0)
+					 if (terms.length - 2>0)
 					 {
-						 additionalPreprocessingString = terms[terms.length -2];
+						 query = query.replace(terms[terms.length -1], "");
+						 query = query.replace(terms[0], "");
+						 query = query.replace("*", ".*");
+						 additionalPreprocessingString = query;
 					 }
 				}
 			}

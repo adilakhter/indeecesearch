@@ -77,11 +77,36 @@ public class PermutermQueryProcessorTests extends TestCase {
 			String expected  = "r$gib";
 			
 			String filteredString = filter.Filter(testQueryTerm);
-			System.out.println(filteredString);
+			
 			
 			assertEquals(expected, filteredString);
 			
 			String preprocessingString = filter.getPostProcessingQueryString();
-			assertEquals("lt", preprocessingString);
+			assertEquals(".*lt.*", preprocessingString);
+			
+			System.out.println(filteredString);
+			System.out.println(preprocessingString);
 		}
+		
+		public void testGetPostProcessingQueryString2()
+		{
+			IFilter filter = new PermutermQueryProcessor();
+			String testQueryTerm = "a*b*c*d";
+			String expected  = "d$a";
+			
+			String filteredString = filter.Filter(testQueryTerm);
+			
+			
+			assertEquals(expected, filteredString);
+			String preprocessingString = filter.getPostProcessingQueryString();
+			System.out.println(filteredString);
+			System.out.println(preprocessingString);
+			
+			assertEquals(".*b.*c.*", preprocessingString);
+			
+			String toMatch = "azbzczxed";
+			System.out.println(toMatch.matches(preprocessingString));
+		}
+		
+		
 }

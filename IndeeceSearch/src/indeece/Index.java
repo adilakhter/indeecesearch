@@ -206,7 +206,7 @@ public class Index implements java.io.Serializable
 						stripped = current.replace(preAndpostFixes[0], "");
 					}
 					//Check if it contains middleFix and if yes, remove current from retTerms
-					if (!stripped.contains(middleFix)){
+					if (!stripped.matches(middleFix)){
 						toBeRemoved.add(current);						
 					}
 				}

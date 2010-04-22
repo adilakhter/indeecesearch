@@ -22,8 +22,8 @@ public class Indeece
 	private static int K = 10;
 	public static HashMap<String , ICosineRankCalculationStrategy>  rankingStrategymappings = new HashMap<String , ICosineRankCalculationStrategy>();
 	
-	private static final String Natural_Ranking =  "Natural TfxIDf";
-	private static final String Sublinear_Ranking =  "Sublinear TfxIDf";
+	private static final String Natural_Ranking =  "Natural Tf";
+	private static final String Sublinear_Ranking =  "Sublinear Tf";
 	private static final String LNC_LTC_Ranking  = "Lnc.Ltc";
 	
 	static 

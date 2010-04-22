@@ -17,7 +17,37 @@ import junit.framework.TestCase;
 public class SerializationTests extends TestCase {
 
 	final static String PathName = "C:\\Work\\TUDelft\\Course\\IR\\IndeceSearch\\IndeeceSearch\\tempCorpus";
-	 public void testSerialization()
+	 
+	public void testBooleanQuery()
+	 {
+		 	Indeece.setCosineRankingStrategy( new NaturalRankCalculationStrategy());	
+		 	try {
+				Indeece.createIndex(new CorpusBuilder(PathName), false, true);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			Indeece.initModels(false);
+			Indeece.setActive("Boolean");
+			
+			Collection<Model.Result> results	= null;
+			String query = "a*i*a";
+			try {
+				results = Indeece.activeModel().search(query);
+				System.out.println("search results .... Query: ["+ query + "]");
+				// print results
+				
+				for(Model.Result result : results)
+				{
+					System.out.println("[Title]: "+ result.getDocument().getTitle().trim() + " \t [Body] : " +result.getDocument().getBody().trim() + " \t [Score] : "+ result.getScore());  
+				}
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	 }
+	
+	public void testSerialization()
 	 {
 		 	Indeece.setCosineRankingStrategy( new NaturalRankCalculationStrategy());	
 		 	try {

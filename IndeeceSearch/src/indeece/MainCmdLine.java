@@ -67,6 +67,12 @@ public class MainCmdLine
 		String query = new String();
 		while(true)
 		{
+			//Have to check the cmd line argument every time
+			//otherwise a vector query (coming from an invalid boolean query)
+			// will not display the scores in the results
+			if(opts.has("b"))
+				Indeece.setActive("Boolean");
+			
 			System.out.print("Enter query: ");
 			
 			// perform search
@@ -76,7 +82,6 @@ public class MainCmdLine
 				results = Indeece.activeModel().search(query);
 			} 
 			catch(Exception e) {
-				e.printStackTrace();
 				if( Indeece.isActiveModel("Boolean")) {
 					results=switchToVectorModel(query);
 				}
@@ -101,7 +106,7 @@ public class MainCmdLine
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		Indeece.setActive("Boolean");
+
 		return results;
 	}
 

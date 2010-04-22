@@ -7,6 +7,9 @@ import util.BinaryHeap;
 
 public class VectModel extends Model {
 
+	private static final double INITIAL_IDF_THRESHOLD = 2.0;
+	private static final double SURVIVING_MIN_PERCENT = 0.2;
+	private static final int RETRY_EFFORTS = 5;
 	private boolean	highIdfOpt	= false;
 	
 	public VectModel(Index index, boolean highIdfOpt)
@@ -21,7 +24,8 @@ public class VectModel extends Model {
 		//HashMap holding the terms and their frequencies in the queries
 		HashMap<String,Integer> queryTerms = preprocess(rawQuery);
 		// prune terms with low idf if necessary.
-		//Currently,low-idf terms are pruned completely but maybe we should just not accumulate scores for those terms but still get their posting lists. ???  (TODO)
+		//Currently,low-idf terms are pruned completely but maybe we should just not 
+		//accumulate scores for those terms but still get their posting lists. ???  (TODO)
 		if(highIdfOpt)
 			queryTerms = pruneLowIdfTerms(queryTerms);
 		//Binary Heap to hold results
@@ -143,44 +147,45 @@ public class VectModel extends Model {
     private  HashMap<String,Integer> pruneLowIdfTerms(HashMap<String,Integer> queryTerms)
     {
 	     //The threshold on which low-idf terms in the query are pruned
-	     double idfThreshold = 2.0;
-	     //Number of retries with lower idfTrheshold in case of pruning all terms of the query
-	     int retryEfforts = 3;
+	     double currentThreshold = INITIAL_IDF_THRESHOLD;
+	     int retryEfforts = RETRY_EFFORTS;
+	     int initialNumOfTerms = queryTerms.size() ;
 	     
+	     float maxIdfFound = 0,
+	     	   currentIdf = 0;
 	     Set<String> terms =  queryTerms.keySet();
 	     Iterator<String> i;
 	     HashMap<String,Integer> retTerms = new HashMap<String,Integer>();
 	     
 	     while(retTerms.isEmpty())
 	     {
-	    	 System.out.println("Threshold is: "+idfThreshold);
+	    	 System.out.println("Threshold is: "+currentThreshold);
 	    	//Clone is needed to avoid concurrent modification error
-		     retTerms = (HashMap<String,Integer>) queryTerms.clone();
+		     retTerms = new HashMap<String, Integer>(queryTerms);
 		     String current = "";
 		     i = terms.iterator();
 		     while(i.hasNext())
 		     {
 		         current = i.next();
-		
-		         if (Indeece.getActiveIndex().getPostingList(current).getTermIdf() < idfThreshold)
-		         {
+		         currentIdf=Indeece.getActiveIndex().getPostingList(current).getTermIdf();
+		         if (currentIdf < currentThreshold)
+		         {	  
+		        	 if(currentIdf > maxIdfFound)
+		        		 maxIdfFound = currentIdf;
 		              retTerms.remove(current);
 		         }
 		     }
-		     //While all terms are pruned and there are remaining retryEfforts
-		     if(retTerms.isEmpty() && retryEfforts > 0)
-		     {
-		    	 //If there are more than 1 remaining retry efforts cut threshold in half and repeat else (last try) make threshold zero
-		    	 if(retryEfforts > 1)
-		    	 {
-		    		 idfThreshold = idfThreshold/2;
-		    		 retryEfforts--;
-		    	 }else{
-		    		 idfThreshold = 0.0;
-		    	 }				    	 
+		   
+			//While all terms are pruned 
+		     if((retTerms.size() < initialNumOfTerms* SURVIVING_MIN_PERCENT) && retryEfforts !=0) {
+		    	 currentThreshold = maxIdfFound/2;
+		    	 retryEfforts--;
 		     }
-		     
+		     if(retryEfforts == 0)
+		    	 currentThreshold = 0;
+		    	 
 	     }
+		     
 	     return retTerms;
     }
 }

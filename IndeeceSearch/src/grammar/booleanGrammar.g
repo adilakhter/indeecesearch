@@ -42,9 +42,6 @@ options {
   package grammar;
 }
 
-
-
-
 prog  : expr EOF
       | EOF;
 

@@ -188,4 +188,25 @@ public class Indeece
 		return consineCalculationStrategy;
 	}
 	
+	public static String getSettings()
+	{
+		String settings = "";
+		if (activeModel instanceof VectModel)
+		{
+			settings = settings + "Search model: Vector Ranking Model: " + Indeece.getCosineStrategy().getStrategyName() +" ";
+			
+		}else{
+			settings= settings + "Search model: Boolean ";
+		}
+		if (index.isStemming())
+		{
+			settings = settings + "Stemming: On ";
+		}else{
+			settings = settings + "Stemming: Off ";
+		}
+		
+		return settings;
+		
+	}
+	
 }

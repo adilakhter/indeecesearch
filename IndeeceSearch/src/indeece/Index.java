@@ -270,4 +270,8 @@ public class Index implements java.io.Serializable
 		return entries;
 		
 	}
+	
+	public boolean isStemming(){
+		return stemming;
+	}
 }

@@ -40,8 +40,7 @@ expr   returns [Set<Doc>  result]
       									if(processedTerm.isEmpty())
       										  return null;
       									else if(processedTerm.size()==1) {
-      									    System.out.println("TOken is"+processedTerm.firstElement());
-      									    //result = Indeece.getActiveIndex().getDocumentSet(processedTerm.firstElement());
+      									    result = Indeece.getActiveIndex().getDocumentSet(processedTerm.firstElement());
       									}
       									// Implemented for permuterm
       									else {

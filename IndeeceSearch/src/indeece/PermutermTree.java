@@ -27,8 +27,10 @@ public class PermutermTree extends TreeMap<String,String>{
 		while(i.hasNext()){
 			currentTerm = i.next();
 			perms = generator.generate(currentTerm);
-			for(int j =0;j<perms.length;j++){
-				this.put(perms[j], currentTerm);				
+			if(perms!=null) {
+				for(int j =0;j<perms.length;j++){
+					this.put(perms[j], currentTerm);				
+				}
 			}
 		}
 	}

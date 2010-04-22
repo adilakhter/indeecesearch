@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,6 +20,18 @@ public class Indeece
 	private static Model VectModel;
 	//Get K results
 	private static int K = 10;
+	public static HashMap<String , ICosineRankCalculationStrategy>  rankingStrategymappings = new HashMap<String , ICosineRankCalculationStrategy>();
+	
+	private static final String Natural_Ranking =  "Natural TfxIDf";
+	private static final String Sublinear_Ranking =  "Sublinear TfxIDf";
+	private static final String LNC_LTC_Ranking  = "Lnc.Ltc";
+	
+	static 
+	{
+		rankingStrategymappings.put(Natural_Ranking, new NaturalRankCalculationStrategy());
+		rankingStrategymappings.put(Sublinear_Ranking, new SubLinearRankCalculationStrategy());
+		rankingStrategymappings.put(LNC_LTC_Ranking, new LncLtcNormalizationStrategy());
+	}
 	
 	
 	public static void createIndex(CorpusBuilder cBuilder, boolean stemming, boolean permuterm) {
@@ -143,7 +156,18 @@ public class Indeece
 	public static void setK(int k) {
 		K = k;
 	}
-
+	
+	
+	public static String[] getCosineRankingStrategiesString()
+	{
+		return new String[]{Natural_Ranking , Sublinear_Ranking , LNC_LTC_Ranking };
+	}
+	public static void setCosineRankingStrategyFromName(
+			String strategyName) {
+		
+		setCosineRankingStrategy(rankingStrategymappings.get(strategyName));
+	}
+	
 	public static void setCosineRankingStrategy(
 			ICosineRankCalculationStrategy strategy) {
 		

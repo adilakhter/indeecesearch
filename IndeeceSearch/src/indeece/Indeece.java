@@ -17,6 +17,8 @@ public class Indeece
 	private static Model activeModel;
 	private static Model BooleanModel;
 	private static Model VectModel;
+	//Get K results
+	private static int K = 10;
 	
 	public static ICosineRankCalculationStrategy  getCosineStrategy()
 	{
@@ -136,5 +138,13 @@ public class Indeece
 	public static boolean isActiveModel(String model) {
 		String active = activeModel == BooleanModel? "Boolean" : "Vector";
 		return active==model?true:false;
+	}
+	
+	public static int getK() {
+		return K;
+	}
+
+	public static void setK(int k) {
+		K = k;
 	}
 }

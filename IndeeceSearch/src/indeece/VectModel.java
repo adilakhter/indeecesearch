@@ -143,21 +143,43 @@ public class VectModel extends Model {
     private  HashMap<String,Integer> pruneLowIdfTerms(HashMap<String,Integer> queryTerms)
     {
 	     //The threshold on which low-idf terms in the query are pruned
-	     double idfThreshold = 2;
+	     double idfThreshold = 2.0;
+	     //Number of retries with lower idfTrheshold in case of pruning all terms of the query
+	     int retryEfforts = 3;
 	     
-	     //Clone is needed to avoid concurrent modification error
-	     HashMap<String,Integer> retTerms = (HashMap<String,Integer>) queryTerms.clone();
-	     String current = "";
 	     Set<String> terms =  queryTerms.keySet();
-	     Iterator<String> i = terms.iterator();
-	     while(i.hasNext())
+	     Iterator<String> i;
+	     HashMap<String,Integer> retTerms = new HashMap<String,Integer>();
+	     
+	     while(retTerms.isEmpty())
 	     {
-	         current = i.next();
-	
-	         if (Indeece.getActiveIndex().getPostingList(current).getTermIdf() < idfThreshold)
-	         {
-	              retTerms.remove(current);
-	         }
+	    	 System.out.println("Threshold is: "+idfThreshold);
+	    	//Clone is needed to avoid concurrent modification error
+		     retTerms = (HashMap<String,Integer>) queryTerms.clone();
+		     String current = "";
+		     i = terms.iterator();
+		     while(i.hasNext())
+		     {
+		         current = i.next();
+		
+		         if (Indeece.getActiveIndex().getPostingList(current).getTermIdf() < idfThreshold)
+		         {
+		              retTerms.remove(current);
+		         }
+		     }
+		     //While all terms are pruned and there are remaining retryEfforts
+		     if(retTerms.isEmpty() && retryEfforts > 0)
+		     {
+		    	 //If there are more than 1 remaining retry efforts cut threshold in half and repeat else (last try) make threshold zero
+		    	 if(retryEfforts > 1)
+		    	 {
+		    		 idfThreshold = idfThreshold/2;
+		    		 retryEfforts--;
+		    	 }else{
+		    		 idfThreshold = 0.0;
+		    	 }				    	 
+		     }
+		     
 	     }
 	     return retTerms;
     }

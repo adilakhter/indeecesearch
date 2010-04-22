@@ -22,5 +22,9 @@ public class NaturalRankCalculationStrategy extends AbstractRankCalculationStrat
 
 		return getDocumentTermWeight( termFrequency , termIdf);
 	}
-
+	@Override
+	public String getStrategyName() {
+		// TODO Auto-generated method stub
+		return "Natural Tf";  
+	}
 }

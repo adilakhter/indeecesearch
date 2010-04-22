@@ -121,8 +121,9 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 			else if(termWeight!=0)
 			{
 				//Normalize score for the lengths of the two document vectors
-				score = scoresMap.get(currentDoc) / (docWeightNorm);
+				score = (float)((double)scoresMap.get(currentDoc) / (double)(docWeightNorm));
 			}
+			
 			//Insert result into heap
 			resultHeap.insert(model.CreateResult(currentDoc, score));
 		}		
@@ -177,6 +178,8 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 		return termWeight; 
 	}
 
+	public abstract String getStrategyName();
+	
 	protected float getIdf(int totalNoOfDocuments, int documentFrequency) {
 		try
 		{

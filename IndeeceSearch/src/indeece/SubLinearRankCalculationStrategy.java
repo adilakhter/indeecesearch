@@ -21,5 +21,11 @@ public class SubLinearRankCalculationStrategy  extends AbstractRankCalculationSt
 		return getDocumentTermWeight(termFrequency , termIdf );
 	}
 
+	@Override
+	public String getStrategyName() {
+		// TODO Auto-generated method stub
+		return "Sublinear Tf";  
+	}
+	
 
 }

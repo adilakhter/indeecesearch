@@ -24,5 +24,10 @@ public class LncLtcNormalizationStrategy extends AbstractRankCalculationStrategy
 		return termFrequency * termIdf;
 	}
 	
+	@Override
+	public String getStrategyName() {
+		// TODO Auto-generated method stub
+		return "LNC.LTC";  
+	}
 
 }

@@ -73,5 +73,9 @@ public abstract class Model
 		private Model getOuterType() {
 			return Model.this;
 		}
+		
+		public Doc getDoc(){
+            return this.doc;
+        }
 	}
 }

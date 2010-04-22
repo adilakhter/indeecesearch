@@ -93,7 +93,7 @@ public class Index implements java.io.Serializable
 	public void addDoc(Doc doc)
 	{
 		// index document's title & body.
-		String content = preprocess(doc.getTitle() + " " + doc.getBody());
+		String content = preprocess(doc.getTitle() + " " + doc.getBody(), true);
 		if(content == null)
 			return;
 	
@@ -131,10 +131,14 @@ public class Index implements java.io.Serializable
 	}
 	
 	// convert content to a string of space separated terms.
-	public String preprocess(String content)
+	public String preprocess(String content, boolean indexMode)
 	{
 		String	ret = "";
-		String	words[]	= content.split("[\\s\t\n\r\f\'\"\\!@#$%^&()_\\+\\-=\\{\\}\\|\\[\\]/`~,>.\\?:;<]");
+		String words[];
+		if (indexMode)
+			words	= content.split("[\\s\t\n\r\f\'\"\\!@#$%^&()_\\+\\-=\\{\\}\\|\\[\\]/`~,>.\\?:;<\\*]");
+		else
+			words	= content.split("[\\s\t\n\r\f\'\"\\!@#$%^&()_\\+\\-=\\{\\}\\|\\[\\]/`~,>.\\?:;<]");
 
 		for(int i=0; i < words.length; i++) {
 			String term = new String();

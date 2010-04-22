@@ -43,7 +43,7 @@ public class VectModel extends Model {
 		
 		HashMap<String,Integer> termFrequencyMap = new HashMap<String,Integer>();
 		System.out.println("rawQuery before :"+rawQuery);
-		String query = index.preprocess(rawQuery);
+		String query = index.preprocess(rawQuery,false);
 		System.out.println("rawQuery after :"+rawQuery);
 		String	words[] = query.split(" ");
 		

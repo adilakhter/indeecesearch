@@ -118,12 +118,9 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 				System.out.println("ZERO WEIGHT NORM");
 				score = 0;
 			}
-			else if(termWeight!=0)
-			{
-				//Normalize score for the lengths of the two document vectors
-				score = (float)((double)scoresMap.get(currentDoc) / (double)(docWeightNorm));
-			}
-			
+			//Normalize score for the lengths of the two document vectors
+			score = (float)((double)scoresMap.get(currentDoc) / (double)(docWeightNorm));
+		
 			//Insert result into heap
 			resultHeap.insert(model.CreateResult(currentDoc, score));
 		}		
@@ -162,9 +159,7 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 		while(docIter.hasNext()) {
 			item = docIter.next();
 			currentDoc = item.getDoc();
-			//documentWeight = (float) (1 + Math.log10((double)item.getFrequency())) * termIdf;
-			//documentWeight = (float) item.getFrequency() * termIdf;
-
+		
 			documentWeight = getDocumentTermWeight (item.getFrequency() , termIdf);
 			if(scoresMap.containsKey(currentDoc))
 			{	
@@ -183,7 +178,7 @@ public abstract class AbstractRankCalculationStrategy implements ICosineRankCalc
 	protected float getIdf(int totalNoOfDocuments, int documentFrequency) {
 		try
 		{
-			return (float) Math.log10((double)totalNoOfDocuments/documentFrequency); //Calculate term idf
+			return (float) Math.log10((double)totalNoOfDocuments/(double)documentFrequency); //Calculate term idf
 		}
 		catch( Exception ex)
 		{

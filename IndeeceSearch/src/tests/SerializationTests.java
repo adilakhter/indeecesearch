@@ -79,7 +79,7 @@ public class SerializationTests extends TestCase {
 	 
 	 public void testSerialization2()
 	 {
-		 	Indeece.setCosineRankingStrategy( new SubLinearRankCalculationStrategy());	
+		 	Indeece.setCosineRankingStrategy( new SubLinearRankCalculationStrategy() , true);	
 		 	try {
 				Indeece.createIndex(new CorpusBuilder(PathName), false, false);
 			} catch (IOException e) {
@@ -89,7 +89,7 @@ public class SerializationTests extends TestCase {
 			Indeece.setActive("Vector");
 			
 			Collection<Model.Result> results	= null;
-			String query = "silver";
+			String query = "fire";
 			try {
 				results = Indeece.activeModel().search(query);
 				System.out.println("search results .... Query: ["+ query + "]");

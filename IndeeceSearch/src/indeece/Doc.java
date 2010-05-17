@@ -7,7 +7,7 @@ import java.util.TreeSet;
 import java.io.*;
 
 public class Doc implements Comparable<Doc>,Serializable{
-	private int ID;
+	private int  ID;
 	private String title;
 	private String body;
 	private int length;
